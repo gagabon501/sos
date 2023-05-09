@@ -24,6 +24,8 @@ app.use((req, res, next) => {
 //routes
 app.use("/api/sos", sosRoutes);
 
+//test use to be removed
+
 //connect to db
 mongoose
   .connect(DB_URI)
