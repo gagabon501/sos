@@ -19,10 +19,7 @@ The app have the following functionalities:
     <li>Perform data analysis</li>
     <li>Produce reports on data analysis</li>
 </ol>
-
-<p>This app is a project for CS203 - Investigative Studio 1 for Yoobee Colleges Online.</p>
-<p>This project is developed by Gilberto Gabon and Mary Rose Garcia.<p>
-<p>Deployment</p>
+**Deployment**
 <ol>
     <li>Push to Github:</li>
         <ul>
@@ -36,3 +33,5 @@ The app have the following functionalities:
             <li>git push heroku main</li>
         </ul>        
 </ol>
+<p>This app is a project for CS203 - Investigative Studio 1 for Yoobee Colleges Online.</p>
+<p>This project is developed by Gilberto Gabon and Mary Rose Garcia.<p>
