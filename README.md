@@ -22,3 +22,17 @@ The app have the following functionalities:
 
 <p>This app is a project for CS203 - Investigative Studio 1 for Yoobee Colleges Online.</p>
 <p>This project is developed by Gilberto Gabon and Mary Rose Garcia.<p>
+<p>Deployment</p>
+<ol>
+    <li>Push to Github:</li>
+        <ul>
+            <li>git add .</li>
+            <li>git commit -am "comments"</li>
+            <li>git push origin main</li>
+        </ul>
+    <li>Login to Heroku from the terminal Heroku CLI(heroku login)</li>        
+    <li>Push to Heroku:</li>
+        <ul>
+            <li>git push heroku main</li>
+        </ul>        
+</ol>
