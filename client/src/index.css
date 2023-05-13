@@ -78,6 +78,7 @@ button {
 
 .bg {
   /* The image used */
+
   background-image: url("/public/bg_green.png");
 
   /* Full height */
@@ -88,6 +89,7 @@ button {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-color: 000000;
 }
 @keyframes spin-anim {
   0% {

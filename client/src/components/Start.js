@@ -7,17 +7,10 @@ function Start() {
   return (
     <Container
       fluid
-      className="d-flex align-items-center justify-content-center vh-100 bg"
+      className="d-flex align-items-center justify-content-center vh-100"
+      style={{ backgroundColor: "#9EC6BF" }}
     >
       <Card style={{ width: "max-content" }}>
-        <Card.Header
-          style={{ textAlign: "center", fontSize: 30, background: "green" }}
-        >
-          <img
-            src="SeeSayDo-landscape.png"
-            style={{ width: "100%", height: "90px", padding: 0 }}
-          ></img>
-        </Card.Header>
         <Card.Body>
           <Nav fill={true}>
             <Stack gap={3}>
@@ -89,7 +82,7 @@ function Start() {
         </Card.Body>
         <Card.Footer>
           <div className="text-center text-muted">
-            <small>Copyright &copy; gagabon501</small>
+            <small>Copyright &copy; 2023 Nodesafe Ltd</small>
           </div>
         </Card.Footer>
       </Card>
