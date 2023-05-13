@@ -18,9 +18,9 @@ The app have the following functionalities:
 ## Deployment
 
 1. Push to Github:
-   > git add .
-   > git commit -am "comments"
-   > git push origin main
+   > - git add .
+   > - git commit -am "comments"
+   > - git push origin main
 2. Login to Heroku from the terminal Heroku CLI(heroku login)
 3. Push to Heroku:
    > git push heroku main
@@ -28,4 +28,4 @@ The app have the following functionalities:
 # About
 
 This app is a project for **CS203 - Investigative Studio 1** for Yoobee Colleges Online.</p>
-This project is developed by Gilberto Gabon and Mary Rose Garcia.<p>
+This project is developed by **Gilberto Gabon** and **Mary Rose Garcia**.<p>
