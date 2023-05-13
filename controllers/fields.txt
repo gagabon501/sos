@@ -1,0 +1,11 @@
+observationType;
+companyWorkFor;
+location;
+involvedCompany;
+description;
+consequence;
+actionTaken;
+furtherAction;
+isResolved;
+reportedTo;
+reportedBy;

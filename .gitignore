@@ -1,3 +1,2 @@
-backend/.env
-backend/node_modules
-frontend/sos/node_modules
+.env
+node_modules
