@@ -19,7 +19,7 @@ The app have the following functionalities:
     <li>Perform data analysis</li>
     <li>Produce reports on data analysis</li>
 </ol>
-**Deployment**
+** Deployment **
 <ol>
     <li>Push to Github:</li>
         <ul>
