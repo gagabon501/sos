@@ -1,11 +1,10 @@
-import Dashboard from "./Dashboard";
-import NavBar from "./NavBar";
+import ObservationForm from "./ObservationForm";
 import SideMenu from "./SideMenu";
+import NavBar from "./NavBar";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Stack from "react-bootstrap/Stack";
-function Start() {
+function CreateObservation() {
   return (
     <>
       <NavBar />
@@ -15,7 +14,7 @@ function Start() {
             <SideMenu />
           </Col>
           <Col>
-            <Dashboard />
+            <ObservationForm />
           </Col>
         </Row>
       </Container>
@@ -23,4 +22,4 @@ function Start() {
   );
 }
 
-export default Start;
+export default CreateObservation;

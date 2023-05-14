@@ -10,7 +10,11 @@ import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 
+import Col from "react-bootstrap/Col";
+
 import ObservationCard from "./ObservationCard";
+import SideMenu from "./SideMenu";
+import NavBar from "./NavBar";
 
 export default function ShowObservations() {
   const { observations, dispatch } = useObservationsContext();
@@ -41,33 +45,33 @@ export default function ShowObservations() {
 
   return (
     <div>
-      <Container fluid className="mt-3">
-        <Link to="/">
-          <img
-            src="SeeSayDo-landscape.png"
-            alt="SeeSayDo logo"
-            style={{ width: "195px", height: "70px" }}
-          ></img>
-        </Link>
-
-        <Card>
-          <Card.Header className="text-center bg-success text-white">
-            <h5>List of Observations</h5>
-          </Card.Header>
-          <Card.Body>
-            {isLoading ? (
-              <div className="loader-container">
-                <div className="spinner"></div>
-              </div>
-            ) : (
-              <Row lg={6}>
-                {observations && (
-                  <ObservationCard observations={observations} />
+      <NavBar />
+      <Container fluid>
+        <Row>
+          <Col lg={2}>
+            <SideMenu />
+          </Col>
+          <Col>
+            <Card>
+              <Card.Header className="text-center bg-success text-white">
+                <h5>List of Observations</h5>
+              </Card.Header>
+              <Card.Body>
+                {isLoading ? (
+                  <div className="loader-container">
+                    <div className="spinner"></div>
+                  </div>
+                ) : (
+                  <Row lg={6}>
+                    {observations && (
+                      <ObservationCard observations={observations} />
+                    )}
+                  </Row>
                 )}
-              </Row>
-            )}
-          </Card.Body>
-        </Card>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
       </Container>
     </div>
   );

@@ -124,13 +124,7 @@ export default function ObservationForm() {
 
   return (
     <div>
-      <Container className="mt-2">
-        <Link to="/">
-          <img
-            src="SeeSayDo-landscape.png"
-            style={{ width: "195px", height: "70px" }}
-          ></img>
-        </Link>
+      <Container fluid>
         <Card>
           <Card.Header className="bg-primary text-center text-white">
             <h3>Record HSEQ Observation</h3>
