@@ -12,7 +12,9 @@ export default function ShowObservations() {
       </Alert>
       <img style={{ width: "100%" }} src="UnderConstruction.jpg" />
       <Link to="/">
-        <Button variant="primary">Home</Button>
+        <Button variant="primary" style={{ marginTop: "10px" }}>
+          Home
+        </Button>
       </Link>
     </Container>
   );
