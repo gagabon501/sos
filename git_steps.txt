@@ -12,7 +12,7 @@
 
     5.2. git commit -am "my new changes"
 
-    5.3 git push
+    5.3 git push origin main
 
 6. If changes from pull, do "git stash apply".
 

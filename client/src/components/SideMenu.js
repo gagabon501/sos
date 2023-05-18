@@ -5,7 +5,7 @@ import MenuBox from "./MenuBox";
 function SideMenu() {
   return (
     <>
-      <Stack Stack direction="vertical" gap={3}>
+      <Stack direction="vertical" gap={3}>
         <Nav.Item fill={true}>
           <Nav.Link href="/">
             <MenuBox text="Dashboard" img="Dashboard_Icon1.png" />

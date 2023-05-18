@@ -56,9 +56,29 @@ export default function ObservationForm() {
   });
 
   const obsUnsafeConditions = [
-    "CAT001 - Poor housekeeping",
-    "CAT002 - Slip, trips, and falls",
-  ];
+    "CAT001-General housekeeping",
+    "CAT002-Slip, trip and fall hazards",
+    "CAT003-Electrical hazards",
+    "CAT004-Equipment operation",
+    "CAT005-Equipment maintenance",
+    "CAT006-Fire protection",
+    "CAT007-Confined spaces",
+    "CAT008-Working at height",
+    "CAT009-Radiation",
+    "CAT010-Extreme weather",
+    "CAT011-Extreme noise",
+    "CAT012-Unlabeled liquids",
+    "CAT013-Flammable substances",
+    "CAT014-Harmful gases",
+  ].map((obs, i) => {
+    return (
+      <option key={i} value={obs}>
+        {obs.substring(7, obs.length)}
+      </option>
+    );
+  });
+
+  const obsUnsafeActs = [];
 
   const onChange = (e) => {
     setFile(e.target.files[0]);
@@ -171,19 +191,13 @@ export default function ObservationForm() {
                 </Col>
                 <Col lg={true}>
                   <Form.Group className="mb-3" controlId="formCompanyWorkFor">
-                    <Form.Label>Who do you work for? *</Form.Label>
+                    <Form.Label>Observation Category *</Form.Label>
                     <Form.Select
                       defaultValue="Choose..."
                       ref={formCompanyWorkForRef}
                     >
                       <option>Choose...</option>
-                      <option value="COM001-McConnell Dowell/BE/Alliance/JV">
-                        McConnell Dowell/BE/Alliance/JV
-                      </option>
-                      <option value="COM002-Client">Client</option>
-                      <option value="COM003-Subcontractor/Labour Hire">
-                        Subcontractor/Labour Hire
-                      </option>
+                      {obsUnsafeConditions}
                     </Form.Select>
                     <Form.Text className="text-muted">
                       Choose the most applicable type

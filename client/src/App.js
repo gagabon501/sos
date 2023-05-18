@@ -9,11 +9,11 @@ import CreateObservation from "./components/CreateObservation";
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Start />}></Route>
-      <Route path="/login" element={<LoginForm />}></Route>
-      <Route path="/observe" element={<CreateObservation />}></Route>
-      <Route path="/register" element={<RegisterForm />}></Route>
-      <Route path="/show" element={<ShowObservations />}></Route>
+      <Route path="/" element={<Start />} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/observe" element={<CreateObservation />} />
+      <Route path="/register" element={<RegisterForm />} />
+      <Route path="/show" element={<ShowObservations />} />
     </Routes>
   );
 };
