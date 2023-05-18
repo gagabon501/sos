@@ -50,4 +50,4 @@ const ssdSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("SeeSayDo", ssdSchema);
+module.exports = mongoose.model("SosDb", ssdSchema);

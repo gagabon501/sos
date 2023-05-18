@@ -39,6 +39,27 @@ export default function ObservationForm() {
   const [message, setMessage] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
 
+  const obsType = [
+    "OBS001-Unsafe Conditions",
+    "OBS002-Unsafe Behaviour",
+    "OBS003-Environmental Hazard",
+    "OBS004-Safe Conditions",
+    "OBS005-Safe Behaviour",
+    "OBS006-Environmental Opportunity",
+    "OBS007-Opportunity for Improvement",
+  ].map((obs, i) => {
+    return (
+      <option key={i} value={obs}>
+        {obs.substring(7, obs.length)}
+      </option>
+    );
+  });
+
+  const obsUnsafeConditions = [
+    "CAT001 - Poor housekeeping",
+    "CAT002 - Slip, trips, and falls",
+  ];
+
   const onChange = (e) => {
     setFile(e.target.files[0]);
     setFilename(e.target.files[0].name);
@@ -127,7 +148,7 @@ export default function ObservationForm() {
       <Container fluid>
         <Card>
           <Card.Header className="bg-primary text-center text-white">
-            <h3>Record HSEQ Observation</h3>
+            <h3>Record HSE Observation</h3>
           </Card.Header>
           <Card.Body>
             {message ? <Message msg={message} /> : null}
@@ -135,33 +156,13 @@ export default function ObservationForm() {
               <Row>
                 <Col lg={true}>
                   <Form.Group className="mb-3" controlId="formObservationType">
-                    <Form.Label>See Say Do Type *</Form.Label>
+                    <Form.Label>Observation Type *</Form.Label>
                     <Form.Select
                       defaultValue="Choose..."
                       ref={formObservationTypeRef}
                     >
                       <option>Choose...</option>
-                      <option value="OBS001-Unsafe Conditions">
-                        Unsafe Conditions
-                      </option>
-                      <option value="OBS002-Unsafe Behaviour">
-                        Unsafe Behaviour
-                      </option>
-                      <option value="OBS003-Environmental Hazard">
-                        Environmental Hazard
-                      </option>
-                      <option value="OBS004-Safe Conditions">
-                        Safe Conditions
-                      </option>
-                      <option value="OBS005-Safe Behaviour">
-                        Safe Behaviour
-                      </option>
-                      <option value="OBS006-Environmental Opportunity">
-                        Environmental Opportunity
-                      </option>
-                      <option value="OBS007-Opportunity for Improvement">
-                        Opportunity for Improvement
-                      </option>
+                      {obsType}
                     </Form.Select>
                     <Form.Text className="text-muted">
                       Choose the most applicable type

@@ -1,0 +1,27 @@
+1. git pull
+
+2. Work - your code works
+
+3. git stash
+
+4. git pull
+
+5. If no changes from pull. Do "git stash apply".
+
+    5.1 git add .
+
+    5.2. git commit -am "my new changes"
+
+    5.3 git push
+
+6. If changes from pull, do "git stash apply".
+
+    6.1 manually resolve merge conflicts in conflicting files
+
+    6.2 check if code works
+
+    6.3 git add 
+
+    6.4 git commit -m "Merged your code with your partners. Also what were my new changes to the code"
+
+    6.5 git push
