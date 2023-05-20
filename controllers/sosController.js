@@ -105,19 +105,19 @@ const updateObservation = async (req, res) => {
   res.status(200).json(observation);
 };
 
-// const showImage = (req, res) => {
-//   let gridFSBucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
-//     chunkSizeBytes: 1024,
-//     bucketName: "docs",
-//   });
-
-//   const readstream = gridFSBucket.openDownloadStreamByName(req.params.filename);
-//   readstream.pipe(res);
-// };
-
 const showImage = (req, res) => {
-  res.redirect(`/images/${req.params.filename}`); //well done mate! re-routed the API call! now using static file instead of saving into mongodb: 13-May-23
+  let gridFSBucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    chunkSizeBytes: 1024,
+    bucketName: "docs",
+  });
+
+  const readstream = gridFSBucket.openDownloadStreamByName(req.params.filename);
+  readstream.pipe(res);
 };
+
+// const showImage = (req, res) => {
+//   res.redirect(`/images/${req.params.filename}`); //well done mate! re-routed the API call! now using static file instead of saving into mongodb: 13-May-23
+// };
 
 module.exports = {
   getObservations,
