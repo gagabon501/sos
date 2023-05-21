@@ -1,7 +1,7 @@
 import React from "react";
 import { useRef, useState } from "react";
 import { useObservationsContext } from "../hooks/useObservationsContext";
-import { Link, useNavigate, useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Container from "react-bootstrap/Container";
@@ -39,8 +39,10 @@ export default function ObservationForm() {
   const [message, setMessage] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
 
+  const [obsCategory, setObsCategory] = useState([]);
+
   const obsType = [
-    "OBS001-Unsafe Conditions",
+    "OBS001-Unsafe Condition",
     "OBS002-Unsafe Behaviour",
     "OBS003-Environmental Hazard",
     "OBS004-Safe Conditions",
@@ -60,16 +62,28 @@ export default function ObservationForm() {
     "CAT002-Slip, trip and fall hazards",
     "CAT003-Electrical hazards",
     "CAT004-Equipment operation",
-    "CAT005-Equipment maintenance",
+    "CAT005-Mobile plant and equipment",
     "CAT006-Fire protection",
     "CAT007-Confined spaces",
     "CAT008-Working at height",
-    "CAT009-Radiation",
-    "CAT010-Extreme weather",
-    "CAT011-Extreme noise",
-    "CAT012-Unlabeled liquids",
-    "CAT013-Flammable substances",
-    "CAT014-Harmful gases",
+    "CAT009-Lifting",
+    "CAT010-Pressurised systems",
+  ].map((obs, i) => {
+    return (
+      <option key={i} value={obs}>
+        {obs.substring(7, obs.length)}
+      </option>
+    );
+  });
+  const obsUnsafeActs = [
+    "CAT021-Non wearing of PPE",
+    "CAT022-Working without Permit-to-Work",
+    "CAT022-Operating equipment without license",
+    "CAT023-Working under suspended load",
+    "CAT024-Working without fall protection",
+    "CAT025-Smoking/vaping on site",
+    "CAT026-Swearing/foul language",
+    "CAT027-Bullying/harassment",
   ].map((obs, i) => {
     return (
       <option key={i} value={obs}>
@@ -78,7 +92,34 @@ export default function ObservationForm() {
     );
   });
 
-  const obsUnsafeActs = [];
+  const obsEnviroHazard = [
+    "CAT031-Extreme noise",
+    "CAT032-Unlabeled liquids",
+    "CAT033-Flammable substances",
+    "CAT034-Harmful gases",
+    "CAT035-Radiation",
+    "CAT036-Inclement weather",
+    "CAT037-Poor ventilation",
+    "CAT038-Exposure to asbestos",
+    "CAT039-Poor drainage",
+    "CAT040-Erosion",
+    "CAT041-Poor silt controls",
+    "CAT042-Water contamination",
+  ].map((obs, i) => {
+    return (
+      <option key={i} value={obs}>
+        {obs.substring(7, obs.length)}
+      </option>
+    );
+  });
+
+  const obsOthers = ["CAT099-N/A"].map((obs, i) => {
+    return (
+      <option key={i} value={obs}>
+        {obs.substring(7, obs.length)}
+      </option>
+    );
+  });
 
   const onChange = (e) => {
     setFile(e.target.files[0]);
@@ -98,6 +139,26 @@ export default function ObservationForm() {
     setIsResolved(e.target.value);
   };
 
+  const onChangeObsType = (e) => {
+    console.log(e.target.value.substr(0, 6));
+    switch (e.target.value.substr(0, 6)) {
+      case "OBS001":
+        setObsCategory(obsUnsafeConditions);
+        break;
+
+      case "OBS002":
+        setObsCategory(obsUnsafeActs);
+        break;
+      case "OBS003":
+        setObsCategory(obsEnviroHazard);
+        break;
+
+      default:
+        console.log("Others");
+        setObsCategory(obsOthers);
+    }
+  };
+
   const navigate = useNavigate();
   // const history = useHistory();
 
@@ -109,10 +170,10 @@ export default function ObservationForm() {
     const enteredformLocation = formLocationRef.current.value;
     const enteredInvolvedCompany = formInvolvedCompanyRef.current.value;
     const enteredDescription = formDescriptionRef.current.value;
-    const enteredConsequence = formConsequenceRef.current.value;
-    const enteredActionTaken = formActionTakenRef.current.value;
-    const enteredFurtherActions = formFurtherActionsRef.current.value;
-    const enteredisResolved = isResolved; //used state variable here due to difficulty in getting the correct value when use 'ref'
+    // const enteredConsequence = formConsequenceRef.current.value;
+    // const enteredActionTaken = formActionTakenRef.current.value;
+    // const enteredFurtherActions = formFurtherActionsRef.current.value;
+    // const enteredisResolved = isResolved; //used state variable here due to difficulty in getting the correct value when use 'ref'
     const enteredReportedTo = formReportedToRef.current.value;
     const enteredYourName = formYourNameRef.current.value;
 
@@ -123,10 +184,10 @@ export default function ObservationForm() {
     formData.append("location", enteredformLocation);
     formData.append("involvedCompany", enteredInvolvedCompany);
     formData.append("description", enteredDescription);
-    formData.append("consequence", enteredConsequence);
-    formData.append("actionTaken", enteredActionTaken);
-    formData.append("furtherActions", enteredFurtherActions);
-    formData.append("isResolved", enteredisResolved);
+    // formData.append("consequence", enteredConsequence);
+    // formData.append("actionTaken", enteredActionTaken);
+    // formData.append("furtherActions", enteredFurtherActions);
+    // formData.append("isResolved", enteredisResolved);
     formData.append("reportedTo", enteredReportedTo);
     formData.append("yourName", enteredYourName);
     formData.append("file", file);
@@ -159,7 +220,7 @@ export default function ObservationForm() {
       // history.push("/");
     } catch (err) {
       console.log(err);
-      setError(err.response.data.msg);
+      setError(err.response.data.error);
     }
   }
 
@@ -180,6 +241,8 @@ export default function ObservationForm() {
                     <Form.Select
                       defaultValue="Choose..."
                       ref={formObservationTypeRef}
+                      onChange={onChangeObsType}
+                      required
                     >
                       <option>Choose...</option>
                       {obsType}
@@ -195,9 +258,10 @@ export default function ObservationForm() {
                     <Form.Select
                       defaultValue="Choose..."
                       ref={formCompanyWorkForRef}
+                      required
                     >
                       <option>Choose...</option>
-                      {obsUnsafeConditions}
+                      {obsCategory}
                     </Form.Select>
                     <Form.Text className="text-muted">
                       Choose the most applicable type
@@ -213,6 +277,7 @@ export default function ObservationForm() {
                       type="text"
                       placeholder="Location of observation"
                       ref={formLocationRef}
+                      required
                     />
                   </Form.Group>
                 </Col>
@@ -223,20 +288,26 @@ export default function ObservationForm() {
                       type="text"
                       placeholder="Name of company"
                       ref={formInvolvedCompanyRef}
+                      required
                     />
                   </Form.Group>
                 </Col>
               </Row>
               <Form.Group className="mb-3" controlId="formDescription">
                 <Form.Label>Description *</Form.Label>
-                <Form.Control as="textarea" rows={3} ref={formDescriptionRef} />
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  ref={formDescriptionRef}
+                  required
+                />
               </Form.Group>
               <Row>
                 <Col lg={8}>
                   <Form.Group controlId="formFile" className="mb-3">
                     <Form.Label>Upload Photo</Form.Label>
                     {/* <ImagesUpload /> */}
-                    <Form.Control type="file" onChange={onChange} />
+                    <Form.Control type="file" onChange={onChange} required />
                   </Form.Group>
                 </Col>
                 <Col>
@@ -256,81 +327,7 @@ export default function ObservationForm() {
                   ) : null}
                 </Col>
               </Row>
-              <Row>
-                <Col lg={true}>
-                  <Form.Group className="mb-3" controlId="formConsequence">
-                    <Form.Label>Consequences *</Form.Label>
-                    <Form.Select
-                      defaultValue="Choose..."
-                      ref={formConsequenceRef}
-                    >
-                      <option>Choose...</option>
-                      <option value="FIX001-HIGH - Fix immediately">
-                        HIGH - Fix immediately
-                      </option>
-                      <option value="FIX002-MEDIUM - Fix within 24-hours">
-                        MEDIUM - Fix within 24-hours
-                      </option>
-                      <option value="FIX003-LOW - Fix with agreed timeframe">
-                        LOW - Fix with agreed timeframe
-                      </option>
-                      <option value="FIX004-Opportunity for Improvement/Positive Observation">
-                        Opportunity for Improvement/Positive Observation
-                      </option>
-                    </Form.Select>
-                    <Form.Text className="text-muted">
-                      Choose the most applicable type
-                    </Form.Text>
-                  </Form.Group>
-                </Col>
-                <Col lg={true} className="mt-5">
-                  <Form.Group className="mb-3" controlId="isResolved">
-                    <Form.Label style={{ marginRight: "5px" }}>
-                      Is this Observation Resolved? *
-                    </Form.Label>
-                    <Form.Check
-                      inline
-                      label="No"
-                      name="isResolved"
-                      type="radio"
-                      id="isNo"
-                      value="no"
-                      onChange={onCheck}
-                    />
-                    <Form.Check
-                      inline
-                      label="Yes"
-                      name="isResolved"
-                      type="radio"
-                      id="isYes"
-                      value="yes"
-                      onChange={onCheck}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={true}>
-                  <Form.Group className="mb-3" controlId="formActionTaken">
-                    <Form.Label>Actions Taken *</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      ref={formActionTakenRef}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col lg={true}>
-                  <Form.Group className="mb-3" controlId="formFurtherActions">
-                    <Form.Label>Further Actions *</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      ref={formFurtherActionsRef}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
+
               <Row>
                 <Col lg={true}>
                   <Form.Group className="mb-3" controlId="formReportedTo">
@@ -339,6 +336,7 @@ export default function ObservationForm() {
                       type="text"
                       placeholder="The person you reported the observation to"
                       ref={formReportedToRef}
+                      required
                     />
                   </Form.Group>
                 </Col>
@@ -354,6 +352,7 @@ export default function ObservationForm() {
                 </Col>
               </Row>
               <Progress percentage={uploadPercentage} />
+              {error}
               <div className="mt-3 d-grid">
                 <Button variant="primary" type="submit">
                   Submit

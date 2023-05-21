@@ -74,12 +74,16 @@ export default function ObservationCard({ observations }) {
             />
 
             <Card.Header className="text-center bg-success text-white">
-              {obs.observationType}
+              {obs.observationType.substr(7, obs.observationType.length)}
             </Card.Header>
             <Card.Body className="text-center">
               <p>{moment(obs.createdAt).format("DD-MMM-YYYY")}</p>
               <p>{obs.location}</p>
-              <p>{obs.description}</p>
+              <p>
+                {obs.description.length > 26
+                  ? obs.description.substr(0, 25) + "..."
+                  : obs.description}
+              </p>
             </Card.Body>
             <Card.Footer className="fs-5">
               <Button
