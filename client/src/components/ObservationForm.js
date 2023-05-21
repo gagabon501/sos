@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef, useState } from "react";
-import { useObservationsContext } from "../hooks/useObservationsContext";
+// import { useObservationsContext } from "../hooks/useObservationsContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -15,25 +15,25 @@ import Message from "./Message";
 import Progress from "./Progress";
 
 export default function ObservationForm() {
-  const { dispatch } = useObservationsContext();
+  // const { dispatch } = useObservationsContext();
 
   const formObservationTypeRef = useRef();
   const formCompanyWorkForRef = useRef();
   const formLocationRef = useRef();
   const formInvolvedCompanyRef = useRef();
   const formDescriptionRef = useRef();
-  const formConsequenceRef = useRef();
-  const formActionTakenRef = useRef();
-  const formFurtherActionsRef = useRef();
+  // const formConsequenceRef = useRef();
+  // const formActionTakenRef = useRef();
+  // const formFurtherActionsRef = useRef();
   const formReportedToRef = useRef();
   const formYourNameRef = useRef();
 
   const [error, setError] = useState(null);
-  const [emptyFields, setEmptyFields] = useState([]);
+  // const [emptyFields, setEmptyFields] = useState([]);
   const [file, setFile] = useState("");
   const [filename, setFilename] = useState("Choose file");
   const [filepreview, setFilePreview] = useState("");
-  const [isResolved, setIsResolved] = useState("");
+  // const [isResolved, setIsResolved] = useState("");
 
   const [uploadedFile, setUploadedFile] = useState({});
   const [message, setMessage] = useState("");
@@ -135,9 +135,10 @@ export default function ObservationForm() {
       return true;
     };
   };
-  const onCheck = (e) => {
-    setIsResolved(e.target.value);
-  };
+
+  // const onCheck = (e) => {
+  //   setIsResolved(e.target.value);
+  // };
 
   const onChangeObsType = (e) => {
     console.log(e.target.value.substr(0, 6));

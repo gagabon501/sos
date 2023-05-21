@@ -62,7 +62,7 @@ export default function ObservationCard({ observations }) {
         <Col lg={true} key={obs._id}>
           <Card style={{ width: "100%" }} className="mt-3" key={obs._id}>
             <Card.Img
-              style={{ width: "100%", height: "14rem", cursor: "pointer" }}
+              style={{ width: "100%", height: "8rem", cursor: "pointer" }}
               variant="top"
               src={`/api/sos/image/${obs.attachment}`}
               onClick={() =>
@@ -77,13 +77,13 @@ export default function ObservationCard({ observations }) {
               {obs.observationType.substr(7, obs.observationType.length)}
             </Card.Header>
             <Card.Body className="text-center">
-              <p>{moment(obs.createdAt).format("DD-MMM-YYYY")}</p>
-              <p>{obs.location}</p>
-              <p>
+              <div>{moment(obs.createdAt).format("DD-MMM-YYYY")}</div>
+              <div>{obs.location}</div>
+              <div>
                 {obs.description.length > 26
-                  ? obs.description.substr(0, 25) + "..."
+                  ? obs.description.substr(0, 24) + "..."
                   : obs.description}
-              </p>
+              </div>
             </Card.Body>
             <Card.Footer className="fs-5">
               <Button
