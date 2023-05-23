@@ -29,7 +29,7 @@ const getObservation = async (req, res) => {
 
 // create a new observation
 const createObservation = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const {
     observationType,
     companyWorkFor,
@@ -58,7 +58,7 @@ const createObservation = async (req, res) => {
       isResolved,
       reportedTo,
       yourName,
-      attachment: req.file.filename,
+      attachment: "sos-" + req.file.filename,
     });
     res.status(200).json(observation);
   } catch (error) {
@@ -106,9 +106,10 @@ const updateObservation = async (req, res) => {
 };
 
 const showImage = (req, res) => {
+  // console.log(mongoose.connection.db);
   let gridFSBucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
     chunkSizeBytes: 1024,
-    bucketName: "docs",
+    bucketName: "sosdocs",
   });
 
   const readstream = gridFSBucket.openDownloadStreamByName(req.params.filename);

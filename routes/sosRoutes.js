@@ -1,33 +1,22 @@
 const express = require("express");
+
+const mongoose = require("mongoose");
+const fs = require("fs");
+const sharp = require("sharp");
+
 const multer = require("multer");
-const { GridFsStorage } = require("multer-gridfs-storage");
 
 require("dotenv").config();
 
-// Create mongo connection
-const DB_URI =
-  process.env.NODE_ENV == "development"
-    ? "mongodb://127.0.0.1:27017"
-    : process.env.MONGO_URI;
-
-// Create storage engine
-const storage = new GridFsStorage({
-  url: DB_URI,
-  options: { useNewUrlParser: true, useUnifiedTopology: true },
-  file: (req, file) => {
-    const match = ["image/png", "image/jpeg", "image/jpg", "image/bmp"];
-
-    if (match.indexOf(file.mimetype) === -1) {
-      const filename = `${Date.now()}-sos-${file.originalname}`;
-      return filename;
-    }
-
-    return {
-      bucketName: "docs",
-      filename: `${Date.now()}-sos-${file.originalname}`,
-    };
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
   },
 });
+
 const upload = multer({ storage });
 
 const {
@@ -47,10 +36,41 @@ router.get("/allobservations", getObservations);
 // GET a single observation
 router.get("/:id", getObservation);
 
-// POST a new observation
-router.post("/", upload.single("file"), createObservation);
+//middleware to reduce image size using 'sharp' before saving to mongoDB database
+const savePhotoDb = async (req, res, next) => {
+  const gridFSBucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    chunkSizeBytes: 1024,
+    bucketName: "sosdocs",
+  });
 
-// router.post("/", multer.single("file"), createObservation);
+  // shrink image before uploading to MongoDb --> 23-May-23
+  const fname_hs = "public/images/sos-" + req.file.filename;
+  try {
+    await sharp(req.file.path, { failOnError: false })
+      .resize(600, 600, {
+        fit: sharp.fit.inside,
+        withoutEnlargement: true, // if image's original width or height is less than specified width and height, sharp will do nothing(i.e no enlargement)
+      })
+      .toFile(fname_hs);
+  } catch (error) {
+    throw error;
+  }
+
+  //now, save to mongoDB database the photo
+  fs.createReadStream(fname_hs)
+    .pipe(gridFSBucket.openUploadStream(fname_hs.slice(14))) //up to the filename part ('sos-req.file.filename')
+    .on("error", () => {
+      console.log("Some error occured:" + error);
+      res.send(error);
+    })
+    .on("finish", () => {
+      console.log("done saving to mongoDB");
+      next();
+    });
+};
+
+// POST a new observation
+router.post("/", upload.single("file"), savePhotoDb, createObservation);
 
 // DELETE a observation
 router.delete("/:id", deleteObservation);
