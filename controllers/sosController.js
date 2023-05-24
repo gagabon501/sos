@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const Observation = require("../models/sosModel");
 
-const fs = require("fs");
-
 // get all observations
 const getObservations = async (req, res) => {
   const observations = await Observation.find({}).sort({ createdAt: -1 });
@@ -29,7 +27,6 @@ const getObservation = async (req, res) => {
 
 // create a new observation
 const createObservation = async (req, res) => {
-  // console.log(req.body);
   const {
     observationType,
     companyWorkFor,
@@ -58,7 +55,7 @@ const createObservation = async (req, res) => {
       isResolved,
       reportedTo,
       yourName,
-      attachment: "sos-" + req.file.filename,
+      attachment: req.fname, //this req.fname was added from the previous middleware
     });
     res.status(200).json(observation);
   } catch (error) {
