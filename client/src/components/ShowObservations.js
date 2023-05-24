@@ -14,6 +14,7 @@ import Col from "react-bootstrap/Col";
 import ObservationCard from "./ObservationCard";
 import SideMenu from "./SideMenu";
 import NavBar from "./NavBar";
+import Footer from "./Footer";
 
 export default function ShowObservations() {
   const { observations, dispatch } = useObservationsContext();
@@ -72,6 +73,9 @@ export default function ShowObservations() {
           </Col>
         </Row>
       </Container>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }

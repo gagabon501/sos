@@ -1,6 +1,7 @@
 import ObservationForm from "./ObservationForm";
 import SideMenu from "./SideMenu";
 import NavBar from "./NavBar";
+import Footer from "./Footer";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -17,6 +18,9 @@ function CreateObservation() {
             <ObservationForm />
           </Col>
         </Row>
+        <footer>
+          <Footer />
+        </footer>
       </Container>
     </>
   );

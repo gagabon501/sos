@@ -4,6 +4,7 @@ import SideMenu from "./SideMenu";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Footer from "./Footer";
 
 function Start() {
   return (
@@ -18,6 +19,9 @@ function Start() {
             <Dashboard />
           </Col>
         </Row>
+        <footer>
+          <Footer />
+        </footer>
       </Container>
     </>
   );
