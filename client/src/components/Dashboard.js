@@ -1,7 +1,9 @@
+import Container from "react-bootstrap/Container";
+import SosChart from "./obsChart";
 function Dashboard() {
   return (
     <>
-      <img src="Incident_Report1.png" alt="dashboard graph" />
+      <SosChart />
     </>
   );
 }
