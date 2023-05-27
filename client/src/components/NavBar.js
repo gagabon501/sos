@@ -8,18 +8,24 @@ function NavBar() {
   return (
     <>
       {[false].map((expand) => (
-        <Navbar key={expand} bg="light" expand={expand} className="mb-2">
+        <Navbar
+          key={expand}
+          bg="dark"
+          variant="dark"
+          expand={expand}
+          className="mb-2"
+        >
           <Container fluid>
             <Navbar.Brand href="/">
               <Stack direction="horizontal" gap={3}>
                 <img
                   src="/SOS_Logo1.png"
-                  width="40"
-                  height="40"
+                  width="50"
+                  height="50"
                   className="d-inline-block align-top"
                   alt="SOS Logo"
                 />
-                <p>Safety Observation System (SOS)</p>
+                <div>Safety Observation System (SOS)</div>
               </Stack>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
