@@ -4,7 +4,7 @@ const Observation = require("../models/sosModel");
 // get all observations
 const getObservations = async (req, res) => {
   const observations = await Observation.find({}).sort({ createdAt: -1 });
-
+  // console.log("server side: ", observations);
   res.status(200).json(observations);
 };
 
@@ -29,7 +29,7 @@ const getObservation = async (req, res) => {
 const createObservation = async (req, res) => {
   const {
     observationType,
-    companyWorkFor,
+    observationCategory,
     location,
     involvedCompany,
     description,
@@ -45,7 +45,7 @@ const createObservation = async (req, res) => {
   try {
     const observation = await Observation.create({
       observationType,
-      companyWorkFor,
+      observationCategory,
       location,
       involvedCompany,
       description,
@@ -117,6 +117,41 @@ const showImage = (req, res) => {
 //   res.redirect(`/images/${req.params.filename}`); //well done mate! re-routed the API call! now using static file instead of saving into mongodb: 13-May-23
 // };
 
+const getStats = async (req, res) => {
+  const obs001 = await Observation.countDocuments({
+    observationType: "OBS001-Unsafe Condition",
+  });
+  const obs002 = await Observation.countDocuments({
+    observationType: "OBS002-Unsafe Behaviour",
+  });
+  const obs003 = await Observation.countDocuments({
+    observationType: "OBS003-Environmental Hazard",
+  });
+  const obs004 = await Observation.countDocuments({
+    observationType: "OBS004-Safe Conditions",
+  });
+  const obs005 = await Observation.countDocuments({
+    observationType: "OBS005-Safe Behaviour",
+  });
+  const obs006 = await Observation.countDocuments({
+    observationType: "OBS006-Environmental Opportunity",
+  });
+  const obs007 = await Observation.countDocuments({
+    observationType: "OBS007-Opportunity for Improvement",
+  });
+  const data = [
+    { name: "UnsafeConditions", count: obs001 },
+    { name: "UnsafeBehaviour", count: obs002 },
+    { name: "EnviroHazards", count: obs003 },
+    { name: "SafeConditions", count: obs004 },
+    { name: "SafeBehaviours", count: obs005 },
+    { name: "EnviroOpportunity", count: obs006 },
+    { name: "OpportImprove", count: obs007 },
+  ];
+  console.log("stats data: ", data);
+  res.status(200).json(data);
+};
+
 module.exports = {
   getObservations,
   getObservation,
@@ -124,4 +159,5 @@ module.exports = {
   deleteObservation,
   updateObservation,
   showImage,
+  getStats,
 };

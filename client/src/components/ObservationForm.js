@@ -18,7 +18,7 @@ export default function ObservationForm() {
   // const { dispatch } = useObservationsContext();
 
   const formObservationTypeRef = useRef();
-  const formCompanyWorkForRef = useRef();
+  const formObsCategoryRef = useRef();
   const formLocationRef = useRef();
   const formInvolvedCompanyRef = useRef();
   const formDescriptionRef = useRef();
@@ -167,7 +167,7 @@ export default function ObservationForm() {
     e.preventDefault();
 
     const enteredType = formObservationTypeRef.current.value;
-    const enteredCompanyWorkFor = formCompanyWorkForRef.current.value;
+    const enteredObsCategory = formObsCategoryRef.current.value;
     const enteredformLocation = formLocationRef.current.value;
     const enteredInvolvedCompany = formInvolvedCompanyRef.current.value;
     const enteredDescription = formDescriptionRef.current.value;
@@ -181,7 +181,7 @@ export default function ObservationForm() {
     //Create Formdata - did this due to the addition of file in the submission of data
     const formData = new FormData();
     formData.append("observationType", enteredType);
-    formData.append("companyWorkFor", enteredCompanyWorkFor);
+    formData.append("observationCategory", enteredObsCategory);
     formData.append("location", enteredformLocation);
     formData.append("involvedCompany", enteredInvolvedCompany);
     formData.append("description", enteredDescription);
@@ -254,11 +254,11 @@ export default function ObservationForm() {
                   </Form.Group>
                 </Col>
                 <Col lg={true}>
-                  <Form.Group className="mb-3" controlId="formCompanyWorkFor">
+                  <Form.Group className="mb-3" controlId="formObsCategoryRef">
                     <Form.Label>Observation Category *</Form.Label>
                     <Form.Select
                       defaultValue="Choose..."
-                      ref={formCompanyWorkForRef}
+                      ref={formObsCategoryRef}
                       required
                     >
                       <option>Choose...</option>

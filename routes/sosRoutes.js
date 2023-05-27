@@ -15,25 +15,17 @@ const {
   deleteObservation,
   updateObservation,
   showImage,
+  getStats,
 } = require("../controllers/sosController");
 
 const router = express.Router();
 
 // GET all observations
 router.get("/allobservations", getObservations);
+router.get("/stats", getStats); //get statistics
 
 // GET a single observation
 router.get("/:id", getObservation);
-
-// Get rid of file saving to a disk: 24-May-23
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "public/images/");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname);
-//   },
-// });
 
 const storage = multer.memoryStorage(); //this is a good way to minimize file saving into the disk - just save it into memory as a buffer
 const upload = multer({ storage });

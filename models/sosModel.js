@@ -8,7 +8,7 @@ const ssdSchema = new Schema(
       type: String,
       required: true,
     },
-    companyWorkFor: {
+    observationCategory: {
       type: String,
       required: true,
     },

@@ -29,7 +29,7 @@ export default function ShowObservations() {
       setIsLoading(true);
       try {
         const response = await axios.get("/api/sos/allobservations");
-        console.log(response.data);
+        console.log("Client side: ", response.data);
 
         // setObservations(response.data);
         dispatch({ type: "SET_OBSERVATIONS", payload: response.data }); //now using 'dispatch' for global state management -- 03-Sept-22
