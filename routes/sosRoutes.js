@@ -17,14 +17,16 @@ const {
   showImage,
   getStats,
   getStats1,
+  getStats2,
 } = require("../controllers/sosController");
 
 const router = express.Router();
 
 // GET all observations
 router.get("/allobservations", getObservations);
-router.get("/stats", getStats); //get statistics
-router.get("/stats1", getStats1); //get statistics
+router.get("/stats", getStats); //get statistics - by Type e.g. Unsafe Conditions, Unsafe Acts, etc.
+router.get("/stats1", getStats1); //get statistics - by Category on Unsafe Conditions, e.g. Housekeeping, Lifting, etc.
+router.get("/stats2", getStats2); //get statistics - by Category on Unsafe Acts, e.g. Non wearing of PPE
 
 // GET a single observation
 router.get("/:id", getObservation);

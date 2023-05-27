@@ -7,6 +7,7 @@ import Footer from "./Footer";
 
 import SosChart from "./SosChart";
 import UnsafeConditionChart from "./UnsafeConditionChart";
+import UnsafeActs from "./UnsafeActs";
 
 function Start() {
   return (
@@ -22,6 +23,9 @@ function Start() {
           </Col>
           <Col>
             <UnsafeConditionChart />
+          </Col>
+          <Col>
+            <UnsafeActs />
           </Col>
         </Row>
         <footer>

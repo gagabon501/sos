@@ -117,87 +117,104 @@ const showImage = (req, res) => {
 //   res.redirect(`/images/${req.params.filename}`); //well done mate! re-routed the API call! now using static file instead of saving into mongodb: 13-May-23
 // };
 
+const statsData = async (soscat) => {
+  let obsData = [];
+
+  obsData = await soscat.map(async (cat) => {
+    const categoryName = Object.values(cat).toString();
+
+    const dataCount = await Observation.countDocuments(cat).then((value) => {
+      const data = {
+        name: categoryName.substring(7, categoryName.length),
+        count: value,
+      };
+
+      return data; //return to dataCount
+    });
+
+    return dataCount; //return to obsData --> creates a Promise
+  });
+
+  return obsData; //returns a Promise
+};
+
 const getStats = async (req, res) => {
-  const obs001 = await Observation.countDocuments({
-    observationType: "OBS001-Unsafe Condition",
-  });
-  const obs002 = await Observation.countDocuments({
-    observationType: "OBS002-Unsafe Behaviour",
-  });
-  const obs003 = await Observation.countDocuments({
-    observationType: "OBS003-Environmental Hazard",
-  });
-  const obs004 = await Observation.countDocuments({
-    observationType: "OBS004-Safe Conditions",
-  });
-  const obs005 = await Observation.countDocuments({
-    observationType: "OBS005-Safe Behaviour",
-  });
-  const obs006 = await Observation.countDocuments({
-    observationType: "OBS006-Environmental Opportunity",
-  });
-  const obs007 = await Observation.countDocuments({
-    observationType: "OBS007-Opportunity for Improvement",
-  });
-  const data = [
-    { name: "UnsafeConditions", count: obs001 },
-    { name: "UnsafeBehaviour", count: obs002 },
-    { name: "EnviroHazards", count: obs003 },
-    { name: "SafeConditions", count: obs004 },
-    { name: "SafeBehaviours", count: obs005 },
-    { name: "EnviroOpportunity", count: obs006 },
-    { name: "OpportImprove", count: obs007 },
+  const category = [
+    { observationType: "OBS001-Unsafe Condition" },
+    { observationType: "OBS002-Unsafe Behaviour" },
+    { observationType: "OBS003-Environmental Hazard" },
+    { observationType: "OBS004-Safe Conditions" },
+    { observationType: "OBS006-Environmental Opportunity" },
+    { observationType: "OBS005-Safe Behaviour" },
+    { observationType: "OBS007-Opportunity for Improvement" },
   ];
-  console.log("stats data: ", data);
-  res.status(200).json(data);
+  try {
+    const data = statsData(category); //returns a single Promise which contains an array of promises, hence the need to Promise.all() to create again one single promise
+    Promise.resolve(data).then((finalvalue) => {
+      Promise.all(finalvalue).then((value) => {
+        Promise.resolve(value).then((data) => {
+          console.log("Final value: ", data);
+          res.status(200).json(data); //Finally!!! I got you! --> 28-May-2023
+        });
+      });
+    });
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
 };
 
 const getStats1 = async (req, res) => {
-  const obs001 = await Observation.countDocuments({
-    observationCategory: "CAT001-General housekeeping",
-  });
-  const obs002 = await Observation.countDocuments({
-    observationCategory: "CAT002-Slip, trip and fall hazards",
-  });
-  const obs003 = await Observation.countDocuments({
-    observationCategory: "CAT003-Electrical hazards",
-  });
-  const obs004 = await Observation.countDocuments({
-    observationCategory: "CAT004-Equipment operation",
-  });
-  const obs005 = await Observation.countDocuments({
-    observationCategory: "CAT005-Mobile plant and equipment",
-  });
-  const obs006 = await Observation.countDocuments({
-    observationCategory: "CAT006-Fire protection",
-  });
-  const obs007 = await Observation.countDocuments({
-    observationCategory: "CAT007-Confined spaces",
-  });
-  const obs008 = await Observation.countDocuments({
-    observationCategory: "CAT008-Working at height",
-  });
-  const obs009 = await Observation.countDocuments({
-    observationCategory: "CAT009-Lifting",
-  });
-  const obs010 = await Observation.countDocuments({
-    observationCategory: "CAT010-Pressurised systems",
-  });
-
-  const data = [
-    { name: "Housekeeping", count: obs001 },
-    { name: "Slip/Trip/Falls", count: obs002 },
-    { name: "ElectHazards", count: obs003 },
-    { name: "EqptOperation", count: obs004 },
-    { name: "MobilePlant", count: obs005 },
-    { name: "FireProtection", count: obs006 },
-    { name: "ConfinedSpaces", count: obs007 },
-    { name: "WorkingAtHeight", count: obs008 },
-    { name: "Lifting", count: obs009 },
-    { name: "PressurisedSys", count: obs010 },
+  const category = [
+    { observationCategory: "CAT001-General housekeeping" },
+    { observationCategory: "CAT002-Slip, trip and fall hazards" },
+    { observationCategory: "CAT003-Electrical hazards" },
+    { observationCategory: "CAT004-Equipment operation" },
+    { observationCategory: "CAT005-Mobile plant and equipment" },
+    { observationCategory: "CAT006-Fire protection" },
+    { observationCategory: "CAT007-Confined spaces" },
+    { observationCategory: "CAT008-Working at height" },
+    { observationCategory: "CAT009-Lifting" },
+    { observationCategory: "CAT010-Pressurised systems" },
   ];
-  console.log("stats data: ", data);
-  res.status(200).json(data);
+  try {
+    const data = statsData(category); //returns a single Promise which contains an array of promises, hence the need to Promise.all() to create again one single promise
+    Promise.resolve(data).then((finalvalue) => {
+      Promise.all(finalvalue).then((value) => {
+        Promise.resolve(value).then((data) => {
+          console.log("Final value: ", data);
+          res.status(200).json(data); //Finally!!! I got you! --> 28-May-2023
+        });
+      });
+    });
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
+
+const getStats2 = async (req, res) => {
+  const category = [
+    { observationCategory: "CAT021-Non wearing of PPE" },
+    { observationCategory: "CAT022-Working without Permit-to-Work" },
+    { observationCategory: "CAT022-Operating equipment without license" },
+    { observationCategory: "CAT023-Working under suspended load" },
+    { observationCategory: "CAT024-Working without fall protection" },
+    { observationCategory: "CAT025-Smoking/vaping on site" },
+    { observationCategory: "CAT026-Swearing/foul language" },
+    { observationCategory: "CAT027-Bullying/harassment" },
+  ];
+  try {
+    const data = statsData(category); //returns a single Promise which contains an array of promises, hence the need to Promise.all() to create again one single promise
+    Promise.resolve(data).then((finalvalue) => {
+      Promise.all(finalvalue).then((value) => {
+        Promise.resolve(value).then((data) => {
+          console.log("Final value: ", data);
+          res.status(200).json(data); //Finally!!! I got you! --> 28-May-2023
+        });
+      });
+    });
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
 };
 
 module.exports = {
@@ -209,4 +226,5 @@ module.exports = {
   showImage,
   getStats,
   getStats1,
+  getStats2,
 };
