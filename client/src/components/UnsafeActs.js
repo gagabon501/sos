@@ -11,9 +11,6 @@ export default function UnsafeConditionChart() {
     "#47a66b",
     "#6447A6",
     "#a67847",
-    "#3283a8",
-    "#ba578c",
-    "#9e3a44",
   ];
 
   const RADIAN = Math.PI / 180;

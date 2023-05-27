@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  ResponsiveContainer,
+  Label,
+} from "recharts";
 
 export default function SosChart() {
   const COLORS = [
@@ -34,7 +41,7 @@ export default function SosChart() {
         textAnchor={x > cx ? "start" : "end"}
         dominantBaseline="central"
       >
-        {`${(percent * 100).toFixed(0)}%`}
+        {`${(percent * 100).toFixed(0)}% `}
       </text>
     );
   };
@@ -61,14 +68,15 @@ export default function SosChart() {
         <Legend verticalAlign="bottom" layout="horizontal" />
 
         <text
-          x="250"
-          y="10"
+          x={200}
+          y={0}
           dominantBaseline="hanging"
           fontSize="36"
           fontWeight="bold"
         >
           By Observation Type
         </text>
+
         <Pie
           data={data}
           labelLine={false}
