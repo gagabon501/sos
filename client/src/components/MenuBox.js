@@ -6,8 +6,10 @@ function MenuBox(props) {
           padding: "10px",
           backgroundColor: "#abe0d7",
           borderWidth: "0.5px",
+          borderRadius: "10px",
           width: "100%",
           marginLeft: "10px",
+          boxShadow: "5px 10px #888888",
         }}
       >
         <img

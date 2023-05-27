@@ -25,6 +25,7 @@ export default function UnsafeConditionChart() {
     outerRadius,
     percent,
     index,
+    count,
   }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -37,7 +38,7 @@ export default function UnsafeConditionChart() {
         textAnchor={x > cx ? "start" : "end"}
         dominantBaseline="central"
       >
-        {`${(percent * 100).toFixed(0)}%`}
+        {`${(percent * 100).toFixed(0)}%-${count}`}
       </text>
     );
   };
