@@ -8,14 +8,14 @@ function NavBar() {
   return (
     <>
       {[false].map((expand) => (
-        <Navbar key={expand} bg="light" expand={expand} className="mb-3">
+        <Navbar key={expand} bg="light" expand={expand} className="mb-2">
           <Container fluid>
             <Navbar.Brand href="/">
               <Stack direction="horizontal" gap={3}>
                 <img
                   src="/SOS_Logo1.png"
-                  width="60"
-                  height="60"
+                  width="40"
+                  height="40"
                   className="d-inline-block align-top"
                   alt="SOS Logo"
                 />

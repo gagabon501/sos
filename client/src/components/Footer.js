@@ -20,7 +20,7 @@ const Footer = () => {
           fluid
           style={{
             backgroundColor: "#1A413A",
-            padding: "25px",
+            padding: "5px",
             position: "fixed",
             left: 0,
             bottom: 0,

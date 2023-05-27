@@ -74,7 +74,8 @@ export default function ObservationCard({ observations }) {
             />
 
             <Card.Header className="text-center bg-success text-white">
-              {obs.observationType.substr(7, obs.observationType.length)}
+              <div>{obs.observationType.substring(7, 30)}</div>
+              <div>{obs.observationCategory.substring(7, 30)}</div>
             </Card.Header>
             <Card.Body className="text-center">
               <div>{moment(obs.createdAt).format("DD-MMM-YYYY@HH:MM")}</div>

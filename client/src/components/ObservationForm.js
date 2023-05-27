@@ -22,9 +22,6 @@ export default function ObservationForm() {
   const formLocationRef = useRef();
   const formInvolvedCompanyRef = useRef();
   const formDescriptionRef = useRef();
-  // const formConsequenceRef = useRef();
-  // const formActionTakenRef = useRef();
-  // const formFurtherActionsRef = useRef();
   const formReportedToRef = useRef();
   const formYourNameRef = useRef();
 
@@ -171,10 +168,6 @@ export default function ObservationForm() {
     const enteredformLocation = formLocationRef.current.value;
     const enteredInvolvedCompany = formInvolvedCompanyRef.current.value;
     const enteredDescription = formDescriptionRef.current.value;
-    // const enteredConsequence = formConsequenceRef.current.value;
-    // const enteredActionTaken = formActionTakenRef.current.value;
-    // const enteredFurtherActions = formFurtherActionsRef.current.value;
-    // const enteredisResolved = isResolved; //used state variable here due to difficulty in getting the correct value when use 'ref'
     const enteredReportedTo = formReportedToRef.current.value;
     const enteredYourName = formYourNameRef.current.value;
 
@@ -185,10 +178,6 @@ export default function ObservationForm() {
     formData.append("location", enteredformLocation);
     formData.append("involvedCompany", enteredInvolvedCompany);
     formData.append("description", enteredDescription);
-    // formData.append("consequence", enteredConsequence);
-    // formData.append("actionTaken", enteredActionTaken);
-    // formData.append("furtherActions", enteredFurtherActions);
-    // formData.append("isResolved", enteredisResolved);
     formData.append("reportedTo", enteredReportedTo);
     formData.append("yourName", enteredYourName);
     formData.append("file", file);

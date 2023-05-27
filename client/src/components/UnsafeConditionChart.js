@@ -4,14 +4,14 @@ import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
 
 export default function UnsafeConditionChart() {
   const COLORS = [
-    "#0088FE",
-    "#A6479D",
-    "#FFBB28",
-    "#FF8042",
-    "#47a66b",
+    "#4169e1",
+    "#FFE5B4",
+    "#0000FF",
+    "#FFC0CB",
+    "#36454F",
     "#6447A6",
-    "#a67847",
-    "#3283a8",
+    "#FFAA00",
+    "#32CD32",
     "#ba578c",
     "#9e3a44",
   ];
