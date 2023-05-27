@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
 
-export default function SosChart() {
+export default function UnsafeConditionChart() {
   const COLORS = [
     "#0088FE",
     "#A6479D",
@@ -43,7 +43,7 @@ export default function SosChart() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get("/api/sos/stats");
+        const response = await axios.get("/api/sos/stats1");
         console.log("Client side: ", response.data);
         setData(response.data);
       } catch (err) {
@@ -59,11 +59,20 @@ export default function SosChart() {
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>
         <Legend verticalAlign="bottom" layout="horizontal" />
+        <text
+          x="190"
+          y="10"
+          dominantBaseline="hanging"
+          fontSize="36"
+          fontWeight="bold"
+        >
+          By Unsafe Conditions
+        </text>
+
         <Pie
           data={data}
           labelLine={false}
           label={renderCustomizedLabel}
-          outerRadius={250}
           dataKey="count"
         >
           {data.map((entry, index) => (

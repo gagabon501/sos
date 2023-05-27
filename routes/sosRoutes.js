@@ -16,6 +16,7 @@ const {
   updateObservation,
   showImage,
   getStats,
+  getStats1,
 } = require("../controllers/sosController");
 
 const router = express.Router();
@@ -23,6 +24,7 @@ const router = express.Router();
 // GET all observations
 router.get("/allobservations", getObservations);
 router.get("/stats", getStats); //get statistics
+router.get("/stats1", getStats1); //get statistics
 
 // GET a single observation
 router.get("/:id", getObservation);

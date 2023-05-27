@@ -1,10 +1,12 @@
-import Dashboard from "./Dashboard";
 import NavBar from "./NavBar";
 import SideMenu from "./SideMenu";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Footer from "./Footer";
+
+import SosChart from "./SosChart";
+import UnsafeConditionChart from "./UnsafeConditionChart";
 
 function Start() {
   return (
@@ -16,7 +18,10 @@ function Start() {
             <SideMenu />
           </Col>
           <Col>
-            <Dashboard />
+            <SosChart />
+          </Col>
+          <Col>
+            <UnsafeConditionChart />
           </Col>
         </Row>
         <footer>

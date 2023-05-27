@@ -152,6 +152,54 @@ const getStats = async (req, res) => {
   res.status(200).json(data);
 };
 
+const getStats1 = async (req, res) => {
+  const obs001 = await Observation.countDocuments({
+    observationCategory: "CAT001-General housekeeping",
+  });
+  const obs002 = await Observation.countDocuments({
+    observationCategory: "CAT002-Slip, trip and fall hazards",
+  });
+  const obs003 = await Observation.countDocuments({
+    observationCategory: "CAT003-Electrical hazards",
+  });
+  const obs004 = await Observation.countDocuments({
+    observationCategory: "CAT004-Equipment operation",
+  });
+  const obs005 = await Observation.countDocuments({
+    observationCategory: "CAT005-Mobile plant and equipment",
+  });
+  const obs006 = await Observation.countDocuments({
+    observationCategory: "CAT006-Fire protection",
+  });
+  const obs007 = await Observation.countDocuments({
+    observationCategory: "CAT007-Confined spaces",
+  });
+  const obs008 = await Observation.countDocuments({
+    observationCategory: "CAT008-Working at height",
+  });
+  const obs009 = await Observation.countDocuments({
+    observationCategory: "CAT009-Lifting",
+  });
+  const obs010 = await Observation.countDocuments({
+    observationCategory: "CAT010-Pressurised systems",
+  });
+
+  const data = [
+    { name: "Housekeeping", count: obs001 },
+    { name: "Slip/Trip/Falls", count: obs002 },
+    { name: "ElectHazards", count: obs003 },
+    { name: "EqptOperation", count: obs004 },
+    { name: "MobilePlant", count: obs005 },
+    { name: "FireProtection", count: obs006 },
+    { name: "ConfinedSpaces", count: obs007 },
+    { name: "WorkingAtHeight", count: obs008 },
+    { name: "Lifting", count: obs009 },
+    { name: "PressurisedSys", count: obs010 },
+  ];
+  console.log("stats data: ", data);
+  res.status(200).json(data);
+};
+
 module.exports = {
   getObservations,
   getObservation,
@@ -160,4 +208,5 @@ module.exports = {
   updateObservation,
   showImage,
   getStats,
+  getStats1,
 };
