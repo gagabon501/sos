@@ -3,7 +3,7 @@ import randomColor from "../helpers/randomColor";
 
 export default function UnsafeConditionChart() {
   let COLORS = [];
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 10; i++) {
     COLORS.push(randomColor());
   }
   console.log(COLORS);
