@@ -24,6 +24,8 @@ const router = express.Router();
 
 // GET all observations
 router.get("/allobservations", getObservations);
+
+//Stats here
 router.get("/stats", getStats); //get statistics - by Type e.g. Unsafe Conditions, Unsafe Acts, etc.
 router.get("/stats1", getStats1); //get statistics - by Category on Unsafe Conditions, e.g. Housekeeping, Lifting, etc.
 router.get("/stats2", getStats2); //get statistics - by Category on Unsafe Acts, e.g. Non wearing of PPE
@@ -41,12 +43,8 @@ const savePhotoDb = async (req, res, next) => {
     bucketName: "sosdocs",
   });
 
-  // console.log(req.file);
-
-  // await sharp(req.file.path, { failOnError: false }) //used when uploaded file is saved into the disk
-
   // shrink image before uploading to MongoDb --> 23-May-23
-  const fname = `public/images/sos-${Date.now()}-${req.file.originalname}`;
+  const fname = `public/images/sos-${Date.now()}-${req.file.originalname}`; //file to contain the sharpened image
 
   try {
     await sharp(req.file.buffer, { failOnError: false }) //using buffer here as the source to 'sharp'

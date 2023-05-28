@@ -38,16 +38,14 @@ export default function StatsChart(props) {
     const fetchStats = async () => {
       try {
         const response = await axios.get(props.url);
-        // console.log("Client side: ", response.data);
         setData(response.data);
       } catch (err) {
         console.log(err);
-        // setError(err.response.data.msg);
       }
     };
 
     fetchStats();
-  }, []);
+  }, [props.url]); //included props.url in the depedency since React is giving a warning suggesting to include this in the dependency: 28-May-23
 
   return (
     <>

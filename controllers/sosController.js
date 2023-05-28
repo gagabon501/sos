@@ -117,10 +117,13 @@ const showImage = (req, res) => {
 //   res.redirect(`/images/${req.params.filename}`); //well done mate! re-routed the API call! now using static file instead of saving into mongodb: 13-May-23
 // };
 
+//The following codes are really done well! I re-factored the code so that there is a single function to retrieve data for statistics.
+//This is parameterized so that the filter conditions are passed here from the calling function. This is contained in the 'soscat' parameter
 const statsData = async (soscat) => {
   let obsData = [];
 
-  obsData = await soscat.map(async (cat) => {
+  //iterate the array of objects that is passed in here from 'soscat'.
+  obsData = soscat.map(async (cat) => {
     const categoryName = Object.values(cat).toString();
 
     const dataCount = await Observation.countDocuments(cat).then((value) => {

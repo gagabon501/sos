@@ -1,11 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-const multer = require("multer");
-// const GridFsStorage = require("multer-gridfs-storage");
-const Grid = require("gridfs-stream");
-const methodOverride = require("method-override");
-const fs = require("fs");
 const cors = require("cors");
 
 require("dotenv").config();
@@ -15,29 +10,20 @@ const sosRoutes = require("./routes/sosRoutes");
 // express app
 const app = express();
 
-// middleware
+// middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(methodOverride("_method"));
-
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static("client/build"));
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.join(__dirname + "/client/build/index.html"));
-//   });
-// }
-
 app.use(express.static(path.join(__dirname, "public"))); //use static folder public
 app.use("/images", express.static("images"));
 
 // routes
 app.use((req, res, next) => {
-  console.log(req.path, req.method);
+  console.log(req.path, req.method); //logging to console what route is currently being taken
   next();
 });
 
-app.use("/api/sos", sosRoutes);
+app.use("/api/sos", sosRoutes); //this is the base route: /api/sos
 
 // connect to db
 const DB_URI =
