@@ -1,18 +1,12 @@
 import StatsChart from "./StatsChart";
+import randomColor from "../helpers/randomColor";
 
 export default function UnsafeConditionChart() {
-  const COLORS = [
-    "#4169e1",
-    "#FFE5B4",
-    "#0000FF",
-    "#FFC0CB",
-    "#36454F",
-    "#6447A6",
-    "#FFAA00",
-    "#32CD32",
-    "#ba578c",
-    "#9e3a44",
-  ];
+  let COLORS = [];
+  for (let i = 0; i < 8; i++) {
+    COLORS.push(randomColor());
+  }
+  console.log(COLORS);
 
   const url = "/api/sos/stats1";
   return <StatsChart color={COLORS} url={url} text="By Unsafe Conditions" />;

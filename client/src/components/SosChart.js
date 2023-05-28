@@ -1,15 +1,12 @@
 import StatsChart from "./StatsChart";
+import randomColor from "../helpers/randomColor";
 
 export default function SosChart() {
-  const COLORS = [
-    "#0088FE",
-    "#A6479D",
-    "#FFBB28",
-    "#FF8042",
-    "#47a66b",
-    "#6447A6",
-    "#a67847",
-  ];
+  let COLORS = [];
+  for (let i = 0; i < 7; i++) {
+    COLORS.push(randomColor());
+  }
+  console.log(COLORS);
 
   const url = "/api/sos/stats";
   return <StatsChart color={COLORS} url={url} text="By Observation Type" />;
