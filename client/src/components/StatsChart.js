@@ -54,10 +54,11 @@ export default function StatsChart(props) {
           <Legend verticalAlign="bottom" layout="horizontal" />
 
           <text
-            x={150}
+            x={props.offset}
             dominantBaseline="hanging"
             fontSize="28"
             fontWeight="bold"
+            fill="white" //fill for the chart title
           >
             {props.text}
           </text>
