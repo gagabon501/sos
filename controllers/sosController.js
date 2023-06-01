@@ -157,7 +157,7 @@ const getStats = async (req, res) => {
     Promise.resolve(data).then((finalvalue) => {
       Promise.all(finalvalue).then((value) => {
         Promise.resolve(value).then((data) => {
-          const final = data.filter((d) => d != undefined);
+          const final = data.filter((d) => d != undefined); //This will only include data that has values in it (> 0) --> 29-05-23
           res.status(200).json(final); //Finally!!! I got you! --> 28-May-2023
         });
       });
@@ -185,7 +185,7 @@ const getStats1 = async (req, res) => {
     Promise.resolve(data).then((finalvalue) => {
       Promise.all(finalvalue).then((value) => {
         Promise.resolve(value).then((data) => {
-          const final = data.filter((d) => d != undefined);
+          const final = data.filter((d) => d != undefined); //This will only include data that has values in it (> 0) --> 29-05-23
           res.status(200).json(final); //Finally!!! I got you! --> 28-May-2023
         });
       });
@@ -211,7 +211,7 @@ const getStats2 = async (req, res) => {
     Promise.resolve(data).then((finalvalue) => {
       Promise.all(finalvalue).then((value) => {
         Promise.resolve(value).then((data) => {
-          const final = data.filter((d) => d != undefined);
+          const final = data.filter((d) => d != undefined); //This will only include data that has values in it (> 0) --> 29-05-23
           res.status(200).json(final); //Finally!!! I got you! --> 28-May-2023
         });
       });
