@@ -127,12 +127,13 @@ const statsData = async (soscat) => {
     const categoryName = Object.values(cat).toString();
 
     const dataCount = await Observation.countDocuments(cat).then((value) => {
-      const data = {
-        name: categoryName.substring(7, categoryName.length),
-        count: value,
-      };
-
-      return data; //return to dataCount
+      if (value) {
+        const data = {
+          name: categoryName.substring(7, categoryName.length),
+          count: value,
+        };
+        return data; //return to dataCount
+      }
     });
 
     return dataCount; //return to obsData --> creates a Promise
@@ -156,8 +157,8 @@ const getStats = async (req, res) => {
     Promise.resolve(data).then((finalvalue) => {
       Promise.all(finalvalue).then((value) => {
         Promise.resolve(value).then((data) => {
-          console.log("Final value: ", data);
-          res.status(200).json(data); //Finally!!! I got you! --> 28-May-2023
+          const final = data.filter((d) => d != undefined); //This will only include data that has values in it (> 0) --> 29-05-23
+          res.status(200).json(final); //Finally!!! I got you! --> 28-May-2023
         });
       });
     });
@@ -184,8 +185,8 @@ const getStats1 = async (req, res) => {
     Promise.resolve(data).then((finalvalue) => {
       Promise.all(finalvalue).then((value) => {
         Promise.resolve(value).then((data) => {
-          console.log("Final value: ", data);
-          res.status(200).json(data); //Finally!!! I got you! --> 28-May-2023
+          const final = data.filter((d) => d != undefined); //This will only include data that has values in it (> 0) --> 29-05-23
+          res.status(200).json(final); //Finally!!! I got you! --> 28-May-2023
         });
       });
     });
@@ -210,8 +211,8 @@ const getStats2 = async (req, res) => {
     Promise.resolve(data).then((finalvalue) => {
       Promise.all(finalvalue).then((value) => {
         Promise.resolve(value).then((data) => {
-          console.log("Final value: ", data);
-          res.status(200).json(data); //Finally!!! I got you! --> 28-May-2023
+          const final = data.filter((d) => d != undefined); //This will only include data that has values in it (> 0) --> 29-05-23
+          res.status(200).json(final); //Finally!!! I got you! --> 28-May-2023
         });
       });
     });

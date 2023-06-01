@@ -8,5 +8,7 @@ export default function UnsafeActs() {
   console.log(COLORS);
 
   const url = "/api/sos/stats2";
-  return <StatsChart color={COLORS} url={url} text="By Unsafe Acts" />;
+  return (
+    <StatsChart color={COLORS} url={url} text="By Unsafe Acts" offset={150} />
+  );
 }

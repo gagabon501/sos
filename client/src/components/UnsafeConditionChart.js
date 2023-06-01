@@ -9,5 +9,12 @@ export default function UnsafeConditionChart() {
   console.log(COLORS);
 
   const url = "/api/sos/stats1";
-  return <StatsChart color={COLORS} url={url} text="By Unsafe Conditions" />;
+  return (
+    <StatsChart
+      color={COLORS}
+      url={url}
+      text="By Unsafe Conditions"
+      offset={110}
+    />
+  );
 }

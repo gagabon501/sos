@@ -9,5 +9,12 @@ export default function SosChart() {
   console.log(COLORS);
 
   const url = "/api/sos/stats";
-  return <StatsChart color={COLORS} url={url} text="By Observation Type" />;
+  return (
+    <StatsChart
+      color={COLORS}
+      url={url}
+      text="By Observation Type"
+      offset={120}
+    />
+  );
 }
