@@ -2,28 +2,19 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
-const methodOverride = require("method-override");
+// const methodOverride = require("method-override");
 
-const User = require("./models/sosUsers");
+// const User = require("./models/sosUsers");
+
+/**
+ * -------------- GENERAL SETUP ----------------
+ */
 
 require("dotenv").config();
-
-const initializePassport = require("./config/passport-config");
-initializePassport(passport, async (email) => {
-  try {
-    const user = await User.findOne({ email: email });
-    console.log(user);
-    return user;
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-const sosRoutes = require("./routes/sosRoutes");
 
 // express app
 const app = express();
@@ -36,23 +27,47 @@ app.use(express.static(path.join(__dirname, "public"))); //use static folder pub
 app.use("/images", express.static("images"));
 
 app.use(flash());
+
+/**
+ * -------------- SESSION SETUP ----------------
+ */
+
+//session middleware
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec)
+    },
   })
 );
+
+/**
+ * -------------- PASSPORT AUTHENTICATION ----------------
+ */
+
+//passport middlewares
+
+// Need to require the entire Passport config module so app.js knows about it
+require("./config/passport");
+
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(methodOverride("_method"));
 
-// routes
+//Console logging middlewares
 app.use((req, res, next) => {
   console.log(req.path, req.method); //logging to console what route is currently being taken
+  console.log(req.session);
+  console.log(req.user);
   next();
 });
 
+/**
+ * -------------- ROUTES ----------------
+ */
+const sosRoutes = require("./routes/sosRoutes");
 app.use("/api/sos", sosRoutes); //this is the base route: /api/sos
 
 // connect to db

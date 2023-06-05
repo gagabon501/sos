@@ -1,7 +1,13 @@
 const express = require("express");
+const router = express.Router();
+
 const passport = require("passport");
+const isAuth = require("./authMiddleware").isAuth;
+const isAdmin = require("./authMiddleware").isAdmin;
 
 const mongoose = require("mongoose");
+const User = require("../models/sosUsers");
+
 const fs = require("fs");
 const sharp = require("sharp");
 
@@ -21,24 +27,6 @@ const {
   getStats2,
   createUser,
 } = require("../controllers/sosController");
-
-const router = express.Router();
-
-// app.get("/", checkNotAuthenticated, (req, res) => {
-//   res.redirect("/login");
-// });
-
-// GET all observations
-// router.get("/allobservations", checkAuthenticated, getObservations);
-router.get("/allobservations", getObservations);
-
-//Stats here
-router.get("/stats", getStats); //get statistics - by Type e.g. Unsafe Conditions, Unsafe Acts, etc.
-router.get("/stats1", getStats1); //get statistics - by Category on Unsafe Conditions, e.g. Housekeeping, Lifting, etc.
-router.get("/stats2", getStats2); //get statistics - by Category on Unsafe Acts, e.g. Non wearing of PPE
-
-// GET a single observation
-router.get("/:id", getObservation);
 
 const storage = multer.memoryStorage(); //this is a good way to minimize file saving into the disk - just save it into memory as a buffer
 const upload = multer({ storage });
@@ -81,48 +69,102 @@ const savePhotoDb = async (req, res, next) => {
     });
 };
 
-function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-
-  res.redirect("/login");
-}
-
-function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.redirect("/");
-  }
-  next();
-}
-
-// router.get("/login", checkNotAuthenticated, (req, res) => {
-//   res.redirect("/");
-// });
+/**
+ * -------------- POST ROUTES ----------------
+ */
+// router.post(
+//   "/login",
+//   passport.authenticate("local", {
+//     successRedirect: "/",
+//     failureRedirect: "/login",
+//     failureFlash: true,
+//   })
+// );
 
 router.post(
   "/login",
+  (req, res, next) => {
+    console.log(req.body);
+    next();
+  },
   passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true,
+    failureRedirect: "/api/sos/login-failure",
+    successRedirect: "/api/sos/login-success",
   })
 );
 
-router.delete("/logout", (req, res) => {
-  console.log("Logging out");
-  req.logOut();
-  res.redirect("/");
+//POST a new user - register
+router.post("/register", upload.single("file"), savePhotoDb, createUser);
+
+// router.post("/register", (req, res, next) => {
+//   const saltHash = genPassword(req.body.pw);
+
+//   const salt = saltHash.salt;
+//   const hash = saltHash.hash;
+
+//   const newUser = new User({
+//     username: req.body.uname,
+//     hash: hash,
+//     salt: salt,
+//     admin: true,
+//   });
+
+//   newUser.save().then((user) => {
+//     console.log(user);
+//   });
+
+//   res.redirect("/login");
+// });
+
+/**
+ * -------------- GET ROUTES ----------------
+ */
+
+router.get("/protected-route", isAuth, (req, res, next) => {
+  res.send("You made it to the route.");
 });
 
-//POST a new user - register
-router.post(
-  "/register",
-  checkNotAuthenticated,
-  upload.single("file"),
-  savePhotoDb,
-  createUser
-);
+router.get("/admin-route", isAdmin, (req, res, next) => {
+  res.send("You made it to the admin route.");
+});
+
+// Visiting this route logs the user out
+router.get("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
+router.get("/login-success", (req, res, next) => {
+  console.log("Login success");
+  const user = {
+    id: req.user._id,
+    email: req.user.email,
+    lastname: req.user.lastname,
+    firstname: req.user.firstname,
+    company: req.user.company,
+    position: req.user.position,
+  };
+  res.json(user);
+});
+
+router.get("/login-failure", (req, res, next) => {
+  console.log("Failed login");
+  res.send("You entered the wrong password.");
+});
+
+router.get("/allobservations", getObservations);
+
+//Stats here
+router.get("/stats", getStats); //get statistics - by Type e.g. Unsafe Conditions, Unsafe Acts, etc.
+router.get("/stats1", getStats1); //get statistics - by Category on Unsafe Conditions, e.g. Housekeeping, Lifting, etc.
+router.get("/stats2", getStats2); //get statistics - by Category on Unsafe Acts, e.g. Non wearing of PPE
+
+// GET a single observation
+router.get("/:id", getObservation);
 
 // POST a new observation
 router.post("/", upload.single("file"), savePhotoDb, createObservation);

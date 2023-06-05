@@ -240,7 +240,8 @@ const createUser = async (req, res) => {
       attachment: req.fname, //this req.fname was added from the previous middleware
     });
     console.log("new user:", user);
-    res.redirect("/login");
+    // res.redirect("/api/sos/login");
+    res.status(200).json({ message: "User created" });
   } catch (error) {
     res.redirect("/register");
   }

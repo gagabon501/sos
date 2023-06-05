@@ -3,7 +3,10 @@ import axios from "axios";
 const LogOut = () => {
   const doLogOut = async () => {
     try {
-      await axios.delete("/api/sos/logout");
+      await axios.get("/api/sos/logout");
+      localStorage.setItem("auth", "false");
+
+      window.location.replace("/");
     } catch (err) {
       console.log(err);
     }

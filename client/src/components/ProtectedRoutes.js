@@ -2,8 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const isAuth = () => {
   //this function will get user's login status
-  const user = { loggedIn: false };
-  return user && user.loggedIn;
+  return localStorage.getItem("auth") == "true"; //this is just a temporary solution since this is a poor security practice. Use a global state variable using Redux or context/hooks
 };
 
 const ProtectedRoutes = () => {

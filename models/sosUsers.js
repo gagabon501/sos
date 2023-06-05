@@ -28,6 +28,7 @@ const sosUserSchema = new Schema(
     position: {
       type: String,
     },
+    admin: { type: Boolean },
   },
   { timestamps: true }
 );

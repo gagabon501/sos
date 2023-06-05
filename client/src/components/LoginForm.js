@@ -25,18 +25,19 @@ export default function LoginForm() {
     const enteredPassword = formPasswordRef.current.value;
 
     //Create Formdata - did this due to the addition of file in the submission of data
-    const formData = new FormData();
-    formData.append("username", enteredEmail);
-    formData.append("password", enteredPassword);
+    // const formData = new FormData();
+    // formData.append("email", enteredEmail);
+    // formData.append("password", enteredPassword);
 
     try {
-      const response = await axios.post("/api/sos/login", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const response = await axios.post("/api/sos/login", {
+        email: enteredEmail,
+        password: enteredPassword,
       });
+      console.log(response.data);
+      localStorage.setItem("auth", "true");
 
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       console.log(err);
       setError(err.response.data.error);
