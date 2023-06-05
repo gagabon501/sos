@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/esm/Container";
 import Card from "react-bootstrap/Card";
+import Nav from "react-bootstrap/Nav";
 
 import Message from "./Message";
 import Progress from "./Progress";
@@ -105,9 +106,13 @@ export default function RegisterForm() {
   return (
     <div>
       <Container>
-        <div className="logo-registration">
-          <img src="../SOS_Logo1.png" alt="Upper right logo" />
-        </div>
+        <Nav.Item>
+          <Nav.Link href="/">
+            <div className="logo-registration">
+              <img src="../SOS_Logo1.png" alt="Upper right logo" />
+            </div>
+          </Nav.Link>
+        </Nav.Item>
 
         <div className="h1-login">
           <h1>(SOS)</h1>
