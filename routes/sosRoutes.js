@@ -1,4 +1,5 @@
 const express = require("express");
+const passport = require("passport");
 
 const mongoose = require("mongoose");
 const fs = require("fs");
@@ -18,11 +19,17 @@ const {
   getStats,
   getStats1,
   getStats2,
+  createUser,
 } = require("../controllers/sosController");
 
 const router = express.Router();
 
+// app.get("/", checkNotAuthenticated, (req, res) => {
+//   res.redirect("/login");
+// });
+
 // GET all observations
+// router.get("/allobservations", checkAuthenticated, getObservations);
 router.get("/allobservations", getObservations);
 
 //Stats here
@@ -73,6 +80,49 @@ const savePhotoDb = async (req, res, next) => {
       next();
     });
 };
+
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  res.redirect("/login");
+}
+
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/");
+  }
+  next();
+}
+
+// router.get("/login", checkNotAuthenticated, (req, res) => {
+//   res.redirect("/");
+// });
+
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureFlash: true,
+  })
+);
+
+router.delete("/logout", (req, res) => {
+  console.log("Logging out");
+  req.logOut();
+  res.redirect("/");
+});
+
+//POST a new user - register
+router.post(
+  "/register",
+  checkNotAuthenticated,
+  upload.single("file"),
+  savePhotoDb,
+  createUser
+);
 
 // POST a new observation
 router.post("/", upload.single("file"), savePhotoDb, createObservation);

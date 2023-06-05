@@ -1,19 +1,112 @@
 import React from "react";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/esm/Container";
+import Card from "react-bootstrap/Card";
+
+import Message from "./Message";
+import Progress from "./Progress";
 
 //needs to edit, just copied from login page
 export default function RegisterForm() {
+  const formEmailRef = useRef();
+  const formPasswordRef = useRef();
+  const formRePasswordRef = useRef();
+  const formLastnameRef = useRef();
+  const formFirstnameRef = useRef();
+  const formCompanyRef = useRef();
+  const formPositionRef = useRef();
+
+  const [error, setError] = useState(null);
+  // const [emptyFields, setEmptyFields] = useState([]);
+  const [file, setFile] = useState("");
+  const [filename, setFilename] = useState("Choose file");
+  const [filepreview, setFilePreview] = useState("");
+  // const [isResolved, setIsResolved] = useState("");
+
+  const [uploadedFile, setUploadedFile] = useState({});
+  const [message, setMessage] = useState("");
+  const [uploadPercentage, setUploadPercentage] = useState(0);
+
+  const onChange = (e) => {
+    setFile(e.target.files[0]);
+    setFilename(e.target.files[0].name);
+
+    setFilePreview(URL.createObjectURL(e.target.files[0]));
+
+    // Image preview
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      reader.readAsDataURL(e.target.files[0]);
+
+      return true;
+    };
+  };
+
+  const navigate = useNavigate();
+
+  async function submitHandler(e) {
+    e.preventDefault();
+
+    const enteredEmail = formEmailRef.current.value;
+    const enteredPassword = formPasswordRef.current.value;
+    // const enteredRePassword = formRePasswordRef.current.value;
+    const enteredLastname = formLastnameRef.current.value;
+    const enteredFirstname = formFirstnameRef.current.value;
+    const enteredCompany = formCompanyRef.current.value;
+    const enteredPosition = formPositionRef.current.value;
+
+    //Create Formdata - did this due to the addition of file in the submission of data
+    const formData = new FormData();
+    formData.append("email", enteredEmail);
+    formData.append("password", enteredPassword);
+    formData.append("lastname", enteredLastname);
+    formData.append("firstname", enteredFirstname);
+    formData.append("company", enteredCompany);
+    formData.append("position", enteredPosition);
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post("/api/sos/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          setUploadPercentage(
+            parseInt(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            )
+          );
+        },
+      });
+
+      // Clear percentage
+      // setTimeout(() => setUploadPercentage(0), 10000);
+      const { fileName, filePath } = response.data;
+
+      setUploadedFile({ fileName, filePath });
+
+      setMessage("File Uploaded");
+      // window.location.replace("/");
+      navigate("/", { replace: true });
+      // history.push("/");
+    } catch (err) {
+      console.log(err);
+      setError(err.response.data.error);
+    }
+  }
+
   return (
     <div>
-     <Container fluid>
-
-
+      <Container>
         <div className="logo-registration">
-          <img src="../SOS_Logo1.png" alt="Upper right logo"/>
+          <img src="../SOS_Logo1.png" alt="Upper right logo" />
         </div>
 
         <div className="h1-login">
@@ -21,97 +114,133 @@ export default function RegisterForm() {
           <h1>Safety Observation System</h1>
         </div>
 
-        <div className="reg-field">
-          <Form>
-            <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-              <Form.Label column sm={2} className="label-text">
-                firstname
-              </Form.Label>
-              <Col sm={10}>
-                <Form.Control type="text" placeholder="firstname" />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-              <Form.Label column sm={2} className="label-text">
-                Lastname
-              </Form.Label>
-              <Col sm={10}>
-                <Form.Control type="text" placeholder="lastname" />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-              <Form.Label column sm={2} className="label-text">
-                Company
-              </Form.Label>
-              <Col sm={10}>
-                <Form.Control type="text" placeholder="Company" />
-              </Col>
-            </Form.Group>
-
-            
-            <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-              <Form.Label column sm={2} className="label-text">
-                Positions
-              </Form.Label>
-              <Col sm={10}>
-                <Form.Control type="text" placeholder="Position" />
-              </Col>
-            </Form.Group>
-
-            
-            <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-              <Form.Label column sm={2} className="label-text">
-                Username
-              </Form.Label>
-              <Col sm={10}>
-                <Form.Control type="email" placeholder="Username" />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-              <Form.Label column sm={2} className="label-text">
-                Password
-              </Form.Label>
-              <Col sm={10}>
-                <Form.Control type="password" placeholder="Password" />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-              <Form.Label column sm={2} className="label-text">
-                Re-enter password
-              </Form.Label>
-              <Col sm={10}>
-                <Form.Control type="password" placeholder="Password" />
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-              <Form.Label column sm={2} className="label-text">
-                Upload Photo
-              </Form.Label>
-              <Col sm={10}>
-                <Form.Control type="file" placeholder="file" />
-              </Col>
-            </Form.Group>
-
-            <div className="sign-btn" >
-              <Form.Group as={Row} >
-                <Col sm={{ span: 10, offset: 2 }}>
-                  <Button type="submit">Submit</Button>
+        <Card>
+          <Card.Header className="bg-primary text-center text-white">
+            <h3>User Registration</h3>
+          </Card.Header>
+          <Card.Body>
+            {message ? <Message msg={message} /> : null}
+            <Form onSubmit={submitHandler}>
+              <Row>
+                <Col lg={true}>
+                  <Form.Group className="mb-3" controlId="formEmail">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="email"
+                      ref={formEmailRef}
+                      required
+                    />
+                  </Form.Group>
                 </Col>
-              </Form.Group>
-            </div>
+                <Col lg={true}>
+                  <Form.Group className="mb-3" controlId="formPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Password"
+                      ref={formPasswordRef}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+                <Col lg={true}>
+                  <Form.Group className="mb-3" controlId="formRePassword">
+                    <Form.Label>Re-type Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Re-type password"
+                      ref={formRePasswordRef}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={true}>
+                  <Form.Group className="mb-3" controlId="formFirstname">
+                    <Form.Label>Firstname</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="firstname"
+                      ref={formFirstnameRef}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+                <Col lg={true}>
+                  <Form.Group className="mb-3" controlId="formLastname">
+                    <Form.Label>Lastname</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="lastname"
+                      ref={formLastnameRef}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={true}>
+                  <Form.Group className="mb-3" controlId="formCompany">
+                    <Form.Label>Company</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="company"
+                      ref={formCompanyRef}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+                <Col lg={true}>
+                  <Form.Group className="mb-3" controlId="formPosition">
+                    <Form.Label>Position</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="position"
+                      ref={formPositionRef}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            <div className="img-preview">
-              <img src="../Profile_Image.png" alt="Logo on the side"/>
-            </div>
-          
-          </Form>
-        </div>
+              <Row>
+                <Col lg={8}>
+                  <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Label>Upload Photo</Form.Label>
 
+                    <Form.Control type="file" onChange={onChange} required />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  {uploadedFile ? (
+                    <div className="mt-4">
+                      <img
+                        src={filepreview}
+                        style={{
+                          border: "1px solid #ddd",
+                          borderRadius: "50%",
+                          width: "200px",
+                          height: "200px",
+                        }}
+                        alt="preview"
+                      />
+                    </div>
+                  ) : null}
+                </Col>
+              </Row>
+
+              <Progress percentage={uploadPercentage} />
+              {error}
+              <div className="mt-3 d-grid">
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
       </Container>
     </div>
   );

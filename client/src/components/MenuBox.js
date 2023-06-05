@@ -27,5 +27,3 @@ function MenuBox(props) {
 }
 
 export default MenuBox;
-//#9ec6bf
-//#1A413A

@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const Observation = require("../models/sosModel");
+const Observation = require("../models/sosObservations");
+const User = require("../models/sosUsers");
+const bcrypt = require("bcrypt");
 
 // get all observations
 const getObservations = async (req, res) => {
@@ -221,6 +223,28 @@ const getStats2 = async (req, res) => {
   }
 };
 
+// create a new user
+const createUser = async (req, res) => {
+  const { email, password, lastname, firstname, company, position } = req.body;
+
+  // add to the database
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({
+      email,
+      password: hashedPassword,
+      lastname,
+      firstname,
+      company,
+      position,
+      attachment: req.fname, //this req.fname was added from the previous middleware
+    });
+    console.log("new user:", user);
+    res.redirect("/login");
+  } catch (error) {
+    res.redirect("/register");
+  }
+};
 module.exports = {
   getObservations,
   getObservation,
@@ -231,4 +255,5 @@ module.exports = {
   getStats,
   getStats1,
   getStats2,
+  createUser,
 };

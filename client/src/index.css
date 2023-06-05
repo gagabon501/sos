@@ -77,7 +77,7 @@ button {
 }
 
 /* Login and Registration */
-.logo-signIn { 
+.logo-signIn {
   width: 60%;
   max-width: 100%;
   height: auto;
@@ -86,7 +86,7 @@ button {
   float: left;
 }
 
-.logo-registration { 
+.logo-registration {
   width: 10px;
   padding-top: 2%;
   padding-left: 5%;
@@ -123,22 +123,21 @@ button {
   padding-bottom: 5%;
   text-align: center;
   width: 100%;
-  color: #366D63 !important;
+  color: #366d63 !important;
 }
 
 .forg-password-text {
-  font-style: italic;
+  color: white;
+  text-align: start;
 }
 
 .reg-text {
-  font-style: italic;
   color: white;
   text-align: end;
-  margin-top: -10%;
 }
 
 .label-text {
-    color: white;
+  color: white;
 }
 
 .img-preview {
@@ -147,8 +146,26 @@ button {
   width: 30%;
   height: auto;
 }
-  
 
+.sign-in-box-left {
+  margin: 0;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  text-align: center;
+  background-color: #3d5af1;
+  border-radius: 10px 0px 0px 10px;
+}
+
+.sign-in-box-right {
+  margin: 0;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  text-align: center;
+  background-color: #e7e6f2;
+  border-radius: 0px 10px 10px 0px;
+}
 
 .bg {
   /* The image used */

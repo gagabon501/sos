@@ -3,6 +3,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Stack from "react-bootstrap/Stack";
+import LogOut from "./LogOut";
+import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
@@ -43,7 +45,7 @@ function NavBar() {
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <Nav.Link href="#update_profile">Update Profile</Nav.Link>
                   <Nav.Link href="#change_password">Change Password</Nav.Link>
-                  <Nav.Link href="#logout">Logout</Nav.Link>
+                  <Link to="/logout">Logout</Link>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

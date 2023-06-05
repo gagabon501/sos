@@ -2,8 +2,26 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
+const passport = require("passport");
+const flash = require("express-flash");
+const session = require("express-session");
+const methodOverride = require("method-override");
+
+const User = require("./models/sosUsers");
 
 require("dotenv").config();
+
+const initializePassport = require("./controllers/passport-config");
+initializePassport(passport, async (email) => {
+  try {
+    const user = await User.findOne({ email: email });
+    console.log(user);
+    return user;
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 const sosRoutes = require("./routes/sosRoutes");
 
@@ -16,6 +34,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public"))); //use static folder public
 app.use("/images", express.static("images"));
+
+app.use(flash());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(methodOverride("_method"));
 
 // routes
 app.use((req, res, next) => {
