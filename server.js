@@ -12,7 +12,7 @@ const User = require("./models/sosUsers");
 
 require("dotenv").config();
 
-const initializePassport = require("./controllers/passport-config");
+const initializePassport = require("./config/passport-config");
 initializePassport(passport, async (email) => {
   try {
     const user = await User.findOne({ email: email });

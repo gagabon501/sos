@@ -149,8 +149,6 @@ button {
 
 .sign-in-box-left {
   margin: 0;
-  width: 100%;
-  height: auto;
   padding: 10px;
   text-align: center;
   background-color: #3d5af1;
@@ -162,7 +160,7 @@ button {
   width: 100%;
   height: auto;
   padding: 10px;
-  text-align: center;
+
   background-color: #e7e6f2;
   border-radius: 0px 10px 10px 0px;
 }

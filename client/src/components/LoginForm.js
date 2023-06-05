@@ -26,7 +26,7 @@ export default function LoginForm() {
 
     //Create Formdata - did this due to the addition of file in the submission of data
     const formData = new FormData();
-    formData.append("email", enteredEmail);
+    formData.append("username", enteredEmail);
     formData.append("password", enteredPassword);
 
     try {
@@ -55,7 +55,7 @@ export default function LoginForm() {
             <img src="../SOS_Logo1.png" alt="Upper right logo" align="left" />
           </div>
 
-          <div style={{ marginTop: "20%" }}>
+          <div style={{ marginTop: "16px" }}>
             <h2>Hey There!</h2>
           </div>
           <div className="mt-5">
@@ -65,23 +65,23 @@ export default function LoginForm() {
             <h6>You are just one step away to your feed</h6>
           </div>
           <div className="mt-5">No account yet?</div>
-
-          <Nav.Item
-            fill={true}
-            className="mt-2"
-            style={{
-              backgroundColor: "#928df2",
-              padding: "8px",
-              borderRadius: "15px",
-            }}
-          >
-            <Nav.Link href="/register">Register</Nav.Link>
-          </Nav.Item>
+          <div>
+            <Nav.Item
+              className="mt-2"
+              style={{
+                backgroundColor: "#928df2",
+                padding: "8px",
+                borderRadius: "15px",
+              }}
+            >
+              <Nav.Link href="/register">Register</Nav.Link>
+            </Nav.Item>
+          </div>
         </Col>
-        <Col className="text-black text-center sign-in-box-right ">
+        <Col className="text-black sign-in-box-right ">
           <h2>SIGN-IN</h2>
           <Form onSubmit={submitHandler}>
-            <Row className="mt-5">
+            <Row className="mt-3">
               <Col lg={true}>
                 <Form.Group className="mb-3" controlId="formEmail">
                   <Form.Label>Email</Form.Label>
@@ -109,8 +109,15 @@ export default function LoginForm() {
             </Row>
             <Row>
               <Col>
-                <div className="d-grid" style={{ marginTop: "85px" }}>
-                  <Button variant="primary" type="submit">
+                <div className="d-grid">
+                  <Button
+                    style={{
+                      padding: "8px",
+                      borderRadius: "15px",
+                    }}
+                    variant="primary"
+                    type="submit"
+                  >
                     Sign-in
                   </Button>
                 </div>
