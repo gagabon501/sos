@@ -19,9 +19,6 @@ import Footer from "./Footer";
 export default function ShowObservations() {
   const { observations, dispatch } = useObservationsContext();
 
-  // const [observations, setObservations] = useState([]); //now replaced with 'context' which manages this state globally -- 03-Sept-22
-
-  // const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -29,13 +26,11 @@ export default function ShowObservations() {
       setIsLoading(true);
       try {
         const response = await axios.get("/api/sos/allobservations");
-        console.log("Client side: ", response.data);
+        // console.log("Client side: ", response.data);
 
-        // setObservations(response.data);
         dispatch({ type: "SET_OBSERVATIONS", payload: response.data }); //now using 'dispatch' for global state management -- 03-Sept-22
       } catch (err) {
         console.log(err);
-        // setError(err.response.data.msg);
       }
       setIsLoading(false);
     };

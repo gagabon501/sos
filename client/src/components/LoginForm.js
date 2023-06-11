@@ -1,5 +1,5 @@
 import React from "react";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -11,10 +11,13 @@ import Container from "react-bootstrap/esm/Container";
 
 import Nav from "react-bootstrap/Nav";
 
+import { UserContext } from "../context/UserContext";
+
 export default function LoginForm() {
   const formEmailRef = useRef();
   const formPasswordRef = useRef();
   const [error, setError] = useState(null);
+  const { user, setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -36,11 +39,12 @@ export default function LoginForm() {
       });
       console.log(response.data);
       localStorage.setItem("auth", "true");
+      setUser(response.data);
 
       navigate("/dashboard", { replace: true });
     } catch (err) {
       console.log(err);
-      setError(err.response.data.error);
+      // setError(err.response.data.error);
     }
   }
 
