@@ -42,10 +42,12 @@ export default function LoginForm() {
       setUser(response.data);
       if (response.data.auth) {
         localStorage.setItem("auth", "true");
+        localStorage.setItem("user", JSON.stringify(response.data));
         setMsg("Login successfull!");
         navigate("/dashboard", { replace: true });
       } else {
         localStorage.setItem("auth", "false");
+        localStorage.setItem("user", null);
         setMsg("Login unsuccessful!");
         navigate("/login", { replace: true });
       }

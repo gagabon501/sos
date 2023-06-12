@@ -238,6 +238,7 @@ const createUser = async (req, res) => {
       company,
       position,
       attachment: req.fname, //this req.fname was added from the previous middleware
+      admin: false,
     });
     console.log("new user:", user);
     // res.redirect("/api/sos/login");

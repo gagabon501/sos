@@ -5,6 +5,7 @@ const LogOut = () => {
     try {
       await axios.get("/api/sos/logout");
       localStorage.setItem("auth", "false");
+      localStorage.setItem("user", null);
 
       window.location.replace("/");
     } catch (err) {

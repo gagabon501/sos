@@ -28,6 +28,9 @@ const sosUserSchema = new Schema(
     position: {
       type: String,
     },
+    attachment: {
+      type: String,
+    },
     admin: { type: Boolean },
   },
   { timestamps: true }

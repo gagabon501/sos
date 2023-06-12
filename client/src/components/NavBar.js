@@ -3,13 +3,11 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Stack from "react-bootstrap/Stack";
-// import LogOut from "./LogOut";
 import { Link } from "react-router-dom";
-// import { useContext } from "react";
-// import { UserContext } from "../context/UserContext";
 
 function NavBar() {
-  // const { user } = useContext(UserContext);
+  const sosuser = JSON.parse(localStorage.getItem("user"));
+
   return (
     <>
       {[false].map((expand) => (
@@ -31,7 +29,14 @@ function NavBar() {
                   alt="SOS Logo"
                 />
                 <div>Safety Observation System (SOS)</div>
-                {/* <div>{user.firstname}</div> */}
+                <div>{sosuser.firstname}</div>
+                <img
+                  src={`/api/sos/image/${sosuser.attachment}`}
+                  width="50"
+                  height="50"
+                  className="d-inline-block align-top"
+                  alt="User Profile Pix"
+                />
               </Stack>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />

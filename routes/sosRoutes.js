@@ -148,6 +148,7 @@ router.get("/login-success", (req, res, next) => {
     company: req.user.company,
     position: req.user.position,
     auth: true,
+    attachment: req.user.attachment,
   };
   res.json(user);
 });
@@ -162,6 +163,7 @@ router.get("/login-failure", (req, res, next) => {
     company: null,
     position: null,
     auth: false,
+    attachment: null,
   };
   // res.send("You entered the wrong password.");
   res.json(user);
