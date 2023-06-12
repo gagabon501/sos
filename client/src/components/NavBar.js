@@ -3,13 +3,13 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Stack from "react-bootstrap/Stack";
-import LogOut from "./LogOut";
+// import LogOut from "./LogOut";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+// import { useContext } from "react";
+// import { UserContext } from "../context/UserContext";
 
 function NavBar() {
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
   return (
     <>
       {[false].map((expand) => (
@@ -31,7 +31,7 @@ function NavBar() {
                   alt="SOS Logo"
                 />
                 <div>Safety Observation System (SOS)</div>
-                <div>{user.firstname}</div>
+                {/* <div>{user.firstname}</div> */}
               </Stack>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />

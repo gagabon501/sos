@@ -6,6 +6,8 @@ const cors = require("cors");
 const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
+
 // const methodOverride = require("method-override");
 
 // const User = require("./models/sosUsers");
@@ -15,6 +17,14 @@ const session = require("express-session");
  */
 
 require("dotenv").config();
+
+// connect to db
+const DB_URI =
+  process.env.NODE_ENV == "development"
+    ? "mongodb://127.0.0.1:27017"
+    : process.env.MONGO_URI;
+const DB_LOCATION =
+  process.env.NODE_ENV == "development" ? "local DB" : "Mongo Atlas DB";
 
 // express app
 const app = express();
@@ -32,6 +42,8 @@ app.use(flash());
  * -------------- SESSION SETUP ----------------
  */
 
+// const connection = mongoose.connection;
+
 //session middleware
 app.use(
   session({
@@ -41,6 +53,9 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // Equals 1 day (1 day * 24 hr/1 day * 60 min/1 hr * 60 sec/1 min * 1000 ms / 1 sec)
     },
+    store: MongoStore.create({
+      mongoUrl: DB_URI,
+    }),
   })
 );
 
@@ -59,8 +74,9 @@ app.use(passport.session());
 //Console logging middlewares
 app.use((req, res, next) => {
   console.log(req.path, req.method); //logging to console what route is currently being taken
-  console.log(req.session);
-  console.log(req.user);
+  console.log("session id: ", req.session.id);
+  // console.log(req.session);
+  // console.log(req.user);
   next();
 });
 
@@ -69,14 +85,6 @@ app.use((req, res, next) => {
  */
 const sosRoutes = require("./routes/sosRoutes");
 app.use("/api/sos", sosRoutes); //this is the base route: /api/sos
-
-// connect to db
-const DB_URI =
-  process.env.NODE_ENV == "development"
-    ? "mongodb://127.0.0.1:27017"
-    : process.env.MONGO_URI;
-const DB_LOCATION =
-  process.env.NODE_ENV == "development" ? "local DB" : "Mongo Atlas DB";
 
 mongoose
   .connect(DB_URI)

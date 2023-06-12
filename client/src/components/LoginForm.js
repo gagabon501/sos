@@ -16,8 +16,9 @@ import { UserContext } from "../context/UserContext";
 export default function LoginForm() {
   const formEmailRef = useRef();
   const formPasswordRef = useRef();
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const { user, setUser } = useContext(UserContext);
+  const [msg, setMsg] = useState("");
 
   const navigate = useNavigate();
 
@@ -38,10 +39,16 @@ export default function LoginForm() {
         password: enteredPassword,
       });
       console.log(response.data);
-      localStorage.setItem("auth", "true");
       setUser(response.data);
-
-      navigate("/dashboard", { replace: true });
+      if (response.data.auth) {
+        localStorage.setItem("auth", "true");
+        setMsg("Login successfull!");
+        navigate("/dashboard", { replace: true });
+      } else {
+        localStorage.setItem("auth", "false");
+        setMsg("Login unsuccessful!");
+        navigate("/login", { replace: true });
+      }
     } catch (err) {
       console.log(err);
       // setError(err.response.data.error);
@@ -85,6 +92,11 @@ export default function LoginForm() {
         </Col>
         <Col className="text-black sign-in-box-right ">
           <h2>SIGN-IN</h2>
+          {user.auth ? (
+            <div className="text-black">{msg}</div>
+          ) : (
+            <div className="text-danger">{msg}</div>
+          )}
           <Form onSubmit={submitHandler}>
             <Row className="mt-3">
               <Col lg={true}>

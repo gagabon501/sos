@@ -147,13 +147,24 @@ router.get("/login-success", (req, res, next) => {
     firstname: req.user.firstname,
     company: req.user.company,
     position: req.user.position,
+    auth: true,
   };
   res.json(user);
 });
 
 router.get("/login-failure", (req, res, next) => {
   console.log("Failed login");
-  res.send("You entered the wrong password.");
+  const user = {
+    id: null,
+    email: null,
+    lastname: null,
+    firstname: null,
+    company: null,
+    position: null,
+    auth: false,
+  };
+  // res.send("You entered the wrong password.");
+  res.json(user);
 });
 
 router.get("/allobservations", getObservations);
