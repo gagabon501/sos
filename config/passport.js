@@ -9,8 +9,8 @@ const customFields = {
 };
 
 const verifyCallback = (username, password, done) => {
-  console.log("Verify callback username: ", username);
-  console.log("Verify callback password: ", password);
+  // console.log("Verify callback username: ", username);
+  // console.log("Verify callback password: ", password);
 
   User.findOne({ username: username })
     .then((user) => {
