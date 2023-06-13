@@ -18,49 +18,46 @@ function NavBar() {
           expand={expand}
           className="mb-2"
         >
-          <Container fluid>
-            <Navbar.Brand href="/">
-              <Stack direction="horizontal" gap={3}>
-                <img
-                  src="/SOS_Logo1.png"
-                  width="50"
-                  height="50"
-                  className="d-inline-block align-top"
-                  alt="SOS Logo"
-                />
-                <div>Safety Observation System (SOS)</div>
-                {sosuser && <div>{sosuser.firstname}</div>}
-                {sosuser && (
-                  <img
-                    src={`/api/sos/image/${sosuser.attachment}`}
-                    width="50"
-                    height="50"
-                    className="d-inline-block align-top"
-                    alt="User Profile Pix"
-                  />
-                )}
-              </Stack>
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
-            <Navbar.Offcanvas
-              id={`offcanvasNavbar-expand-${expand}`}
-              aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-              placement="end"
-            >
-              <Offcanvas.Header closeButton>
-                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                  Profile Menu
-                </Offcanvas.Title>
-              </Offcanvas.Header>
-              <Offcanvas.Body>
-                <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="#update_profile">Update Profile</Nav.Link>
-                  <Nav.Link href="#change_password">Change Password</Nav.Link>
-                  <Link to="/logout">Logout</Link>
-                </Nav>
-              </Offcanvas.Body>
-            </Navbar.Offcanvas>
-          </Container>
+          <Navbar.Brand href="/">
+            <div style={{ marginLeft: "10px" }}>
+              <img src="/SOS_Logo1.png" width="50" height="50" alt="SOS Logo" />
+            </div>
+          </Navbar.Brand>
+          <div className="text-white m-2"> Safety Observation System (SOS)</div>
+
+          {sosuser && (
+            <div className="ms-auto" style={{ marginRight: "10px" }}>
+              <img
+                style={{ borderRadius: "50px" }}
+                src={`/api/sos/image/${sosuser.attachment}`}
+                width="50"
+                height="50"
+                alt="User Profile Pix"
+              />
+            </div>
+          )}
+          <div className="vr text-white m-2" />
+          {sosuser && <div className="text-white m-2">{sosuser.firstname}</div>}
+
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+          <Navbar.Offcanvas
+            id={`offcanvasNavbar-expand-${expand}`}
+            aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
+            placement="end"
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
+                Profile Menu
+              </Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <Nav className="justify-content-end flex-grow-1 pe-3">
+                <Nav.Link href="#update_profile">Update Profile</Nav.Link>
+                <Nav.Link href="#change_password">Change Password</Nav.Link>
+                <Link to="/logout">Logout</Link>
+              </Nav>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
         </Navbar>
       ))}
     </>
