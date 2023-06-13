@@ -9,12 +9,7 @@ import SosChart from "./SosChart";
 import UnsafeConditionChart from "./UnsafeConditionChart";
 import UnsafeActs from "./UnsafeActs";
 
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
-
 function Start() {
-  const { user } = useContext(UserContext);
-  console.log(user);
   return (
     <>
       <NavBar />

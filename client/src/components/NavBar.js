@@ -29,14 +29,16 @@ function NavBar() {
                   alt="SOS Logo"
                 />
                 <div>Safety Observation System (SOS)</div>
-                {/* <div>{sosuser.firstname}</div> */}
-                {/* <img
-                  src={`/api/sos/image/${sosuser.attachment}`}
-                  width="50"
-                  height="50"
-                  className="d-inline-block align-top"
-                  alt="User Profile Pix"
-                /> */}
+                {sosuser && <div>{sosuser.firstname}</div>}
+                {sosuser && (
+                  <img
+                    src={`/api/sos/image/${sosuser.attachment}`}
+                    width="50"
+                    height="50"
+                    className="d-inline-block align-top"
+                    alt="User Profile Pix"
+                  />
+                )}
               </Stack>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
