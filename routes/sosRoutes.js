@@ -96,26 +96,6 @@ router.post(
 //POST a new user - register
 router.post("/register", upload.single("file"), savePhotoDb, createUser);
 
-// router.post("/register", (req, res, next) => {
-//   const saltHash = genPassword(req.body.pw);
-
-//   const salt = saltHash.salt;
-//   const hash = saltHash.hash;
-
-//   const newUser = new User({
-//     username: req.body.uname,
-//     hash: hash,
-//     salt: salt,
-//     admin: true,
-//   });
-
-//   newUser.save().then((user) => {
-//     console.log(user);
-//   });
-
-//   res.redirect("/login");
-// });
-
 /**
  * -------------- GET ROUTES ----------------
  */
