@@ -30,7 +30,7 @@ function NavBar() {
                 />
                 <div>Safety Observation System (SOS)</div>
                 {sosuser && <div>{sosuser.firstname}</div>}
-                {sosuser && (
+                {/* {sosuser && (
                   <img
                     src={`/api/sos/image/${sosuser.attachment}`}
                     width="50"
@@ -38,7 +38,7 @@ function NavBar() {
                     className="d-inline-block align-top"
                     alt="User Profile Pix"
                   />
-                )}
+                )} */}
               </Stack>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
