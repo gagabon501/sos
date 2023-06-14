@@ -11,13 +11,14 @@ import Container from "react-bootstrap/esm/Container";
 
 import Nav from "react-bootstrap/Nav";
 
-import { UserContext } from "../context/UserContext";
+// import { UserContext } from "../context/UserContext";
 
 export default function LoginForm() {
   const formEmailRef = useRef();
   const formPasswordRef = useRef();
   // const [error, setError] = useState(null);
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
+  const [user, setUser] = useState(null);
   const [msg, setMsg] = useState("");
 
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ export default function LoginForm() {
     // formData.append("password", enteredPassword);
 
     try {
+      // console.log("Entered email and password", enteredEmail, enteredPassword);
       const response = await axios.post("/api/sos/login", {
         email: enteredEmail,
         password: enteredPassword,
@@ -43,8 +45,10 @@ export default function LoginForm() {
       if (response.data.auth) {
         localStorage.setItem("auth", "true");
         localStorage.setItem("user", JSON.stringify(response.data));
+        setUser(response.data);
         setMsg("Login successfull!");
         navigate("/dashboard", { replace: true });
+        // console.log(user);
       } else {
         localStorage.setItem("auth", "false");
         localStorage.setItem("user", null);
@@ -94,7 +98,8 @@ export default function LoginForm() {
         </Col>
         <Col className="text-black sign-in-box-right ">
           <h2>SIGN-IN</h2>
-          {user.auth ? (
+
+          {user && user.auth ? (
             <div className="text-black">{msg}</div>
           ) : (
             <div className="text-danger">{msg}</div>

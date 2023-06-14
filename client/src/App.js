@@ -8,7 +8,7 @@ import CreateObservation from "./components/CreateObservation";
 import LogOut from "./components/LogOut";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import { UserContext } from "./context/UserContext";
-import NavBar from "./components/NavBar";
+// import NavBar from "./components/NavBar";
 
 const App = () => {
   const [user, setUser] = useState("Gilbert");

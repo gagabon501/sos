@@ -12,7 +12,7 @@ const verifyCallback = (username, password, done) => {
   // console.log("Verify callback username: ", username);
   // console.log("Verify callback password: ", password);
 
-  User.findOne({ username: username })
+  User.findOne({ email: username })
     .then((user) => {
       if (!user) {
         return done(null, false);

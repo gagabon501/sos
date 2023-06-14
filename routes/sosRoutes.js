@@ -120,6 +120,7 @@ router.get("/logout", (req, res, next) => {
 
 router.get("/login-success", (req, res, next) => {
   console.log("Login success");
+  console.log("user: ", req.user);
   const user = {
     id: req.user._id,
     email: req.user.email,
