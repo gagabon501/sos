@@ -16,8 +16,7 @@ import Nav from "react-bootstrap/Nav";
 export default function LoginForm() {
   const formEmailRef = useRef();
   const formPasswordRef = useRef();
-  // const [error, setError] = useState(null);
-  // const { user, setUser } = useContext(UserContext);
+
   const [user, setUser] = useState(null);
   const [msg, setMsg] = useState("");
 

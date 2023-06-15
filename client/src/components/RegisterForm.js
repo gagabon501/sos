@@ -35,6 +35,35 @@ export default function RegisterForm() {
   const [message, setMessage] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
 
+  const [focused, setFocused] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+
+  const handleFocus = async (e) => {
+    // console.log(e.target.value);
+    setFocused(true);
+    setErrorMessage("Invalid email");
+    try {
+      const response = await axios.get("/api/sos/user/" + e.target.value);
+      // console.log(response.data.duplicate);
+
+      if (response.data.duplicate) {
+        e.target.setCustomValidity("Invalid field."); //forcefully set the :invalid pseudo CSS
+        setFocused(true);
+        setErrorMessage("Email already registered!");
+      } else {
+        e.target.setCustomValidity(""); //restores :valid pseudo CSS
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const checkPassword = (e) => {
+    setFocused(true);
+    setPasswordMessage("Passwords don't match!");
+  };
+
   const onChange = (e) => {
     setFile(e.target.files[0]);
     setFilename(e.target.files[0].name);
@@ -135,7 +164,10 @@ export default function RegisterForm() {
                       placeholder="email"
                       ref={formEmailRef}
                       required
+                      onBlur={handleFocus}
+                      focused={focused.toString()}
                     />
+                    <span>{errorMessage}</span>
                   </Form.Group>
                 </Col>
                 <Col lg={true}>
@@ -156,8 +188,12 @@ export default function RegisterForm() {
                       type="password"
                       placeholder="Re-type password"
                       ref={formRePasswordRef}
+                      pattern={formPasswordRef}
+                      onBlur={checkPassword}
+                      focused={focused.toString()}
                       required
                     />
+                    <span>{passwordMessage}</span>
                   </Form.Group>
                 </Col>
               </Row>

@@ -100,6 +100,17 @@ router.post("/register", upload.single("file"), savePhotoDb, createUser);
  * -------------- GET ROUTES ----------------
  */
 
+router.get("/user/:id", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.id });
+    console.log(user);
+    res.json({ duplicate: user ? true : false });
+  } catch (error) {
+    console.log(error);
+    res.status(401);
+  }
+});
+
 router.get("/protected-route", isAuth, (req, res, next) => {
   res.send("You made it to the route.");
 });
