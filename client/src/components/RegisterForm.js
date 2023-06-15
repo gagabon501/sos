@@ -178,7 +178,7 @@ export default function RegisterForm() {
                       onBlur={handleFocus}
                       focused={focused.toString()}
                     />
-                    <span>{errorMessage}</span>
+                    <span className="spanerror">{errorMessage}</span>
                   </Form.Group>
                 </Col>
                 <Col lg={true}>
@@ -205,7 +205,7 @@ export default function RegisterForm() {
                       focused={focused.toString()}
                       required
                     />
-                    <span>{passwordMessage}</span>
+                    <span className="spanerror">{passwordMessage}</span>
                   </Form.Group>
                 </Col>
               </Row>
