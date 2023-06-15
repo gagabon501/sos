@@ -14,7 +14,6 @@ import Nav from "react-bootstrap/Nav";
 import Message from "./Message";
 import Progress from "./Progress";
 
-//needs to edit, just copied from login page
 export default function RegisterForm() {
   const formEmailRef = useRef();
   const formPasswordRef = useRef();
@@ -25,11 +24,8 @@ export default function RegisterForm() {
   const formPositionRef = useRef();
 
   const [error, setError] = useState(null);
-  // const [emptyFields, setEmptyFields] = useState([]);
   const [file, setFile] = useState("");
-  const [filename, setFilename] = useState("Choose file");
   const [filepreview, setFilePreview] = useState("");
-  // const [isResolved, setIsResolved] = useState("");
 
   const [uploadedFile, setUploadedFile] = useState({});
   const [message, setMessage] = useState("");
@@ -41,12 +37,10 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
 
   const handleFocus = async (e) => {
-    // console.log(e.target.value);
     setFocused(true);
     setErrorMessage("Invalid email");
     try {
       const response = await axios.get("/api/sos/user/" + e.target.value);
-      // console.log(response.data.duplicate);
 
       if (response.data.duplicate) {
         e.target.setCustomValidity("Invalid field."); //forcefully set the :invalid pseudo CSS
@@ -61,23 +55,18 @@ export default function RegisterForm() {
   };
 
   const checkPassword = (e) => {
-    console.log("e.target.value:", e.target.value);
-    console.log("password: ", password.val);
-    if (password.val != e.target.value) {
+    if (password.val !== e.target.value) {
       e.target.setCustomValidity("Invalid field."); //forcefully set the :invalid pseudo CSS
       setFocused(true);
       setPasswordMessage("Passwords don't match!");
     } else {
       e.target.setCustomValidity(""); //restores :valid pseudo CSS
       setFocused(false);
-      // setPasswordMessage("");
-      console.log("password match");
     }
   };
 
   const onChange = (e) => {
     setFile(e.target.files[0]);
-    setFilename(e.target.files[0].name);
 
     setFilePreview(URL.createObjectURL(e.target.files[0]));
 
@@ -97,7 +86,6 @@ export default function RegisterForm() {
 
     const enteredEmail = formEmailRef.current.value;
     const enteredPassword = formPasswordRef.current.value;
-    // const enteredRePassword = formRePasswordRef.current.value;
     const enteredLastname = formLastnameRef.current.value;
     const enteredFirstname = formFirstnameRef.current.value;
     const enteredCompany = formCompanyRef.current.value;
@@ -127,16 +115,12 @@ export default function RegisterForm() {
         },
       });
 
-      // Clear percentage
-      // setTimeout(() => setUploadPercentage(0), 10000);
       const { fileName, filePath } = response.data;
 
       setUploadedFile({ fileName, filePath });
 
       setMessage("File Uploaded");
-      // window.location.replace("/");
       navigate("/", { replace: true });
-      // history.push("/");
     } catch (err) {
       console.log(err);
       setError(err.response.data.error);
