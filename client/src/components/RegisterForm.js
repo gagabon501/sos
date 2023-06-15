@@ -38,6 +38,7 @@ export default function RegisterForm() {
   const [focused, setFocused] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleFocus = async (e) => {
     // console.log(e.target.value);
@@ -60,8 +61,18 @@ export default function RegisterForm() {
   };
 
   const checkPassword = (e) => {
-    setFocused(true);
-    setPasswordMessage("Passwords don't match!");
+    console.log("e.target.value:", e.target.value);
+    console.log("password: ", password.val);
+    if (password.val != e.target.value) {
+      e.target.setCustomValidity("Invalid field."); //forcefully set the :invalid pseudo CSS
+      setFocused(true);
+      setPasswordMessage("Passwords don't match!");
+    } else {
+      e.target.setCustomValidity(""); //restores :valid pseudo CSS
+      setFocused(false);
+      // setPasswordMessage("");
+      console.log("password match");
+    }
   };
 
   const onChange = (e) => {
@@ -178,6 +189,7 @@ export default function RegisterForm() {
                       placeholder="Password"
                       ref={formPasswordRef}
                       required
+                      onChange={(e) => setPassword({ val: e.target.value })}
                     />
                   </Form.Group>
                 </Col>
@@ -188,7 +200,7 @@ export default function RegisterForm() {
                       type="password"
                       placeholder="Re-type password"
                       ref={formRePasswordRef}
-                      pattern={formPasswordRef}
+                      pattern={password.val}
                       onBlur={checkPassword}
                       focused={focused.toString()}
                       required
