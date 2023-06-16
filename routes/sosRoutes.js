@@ -26,6 +26,7 @@ const {
   getStats1,
   getStats2,
   createUser,
+  updateUser,
 } = require("../controllers/sosController");
 
 const storage = multer.memoryStorage(); //this is a good way to minimize file saving into the disk - just save it into memory as a buffer
@@ -95,6 +96,9 @@ router.post(
 
 //POST a new user - register
 router.post("/register", upload.single("file"), savePhotoDb, createUser);
+
+//POST a new user - register
+router.post("/user/:id", upload.single("file"), savePhotoDb, updateUser);
 
 /**
  * -------------- GET ROUTES ----------------

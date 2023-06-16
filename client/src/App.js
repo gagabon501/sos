@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Start from "./components/Start";
 import LoginForm from "./components/LoginForm";
@@ -7,6 +7,7 @@ import ShowObservations from "./components/ShowObservations";
 import CreateObservation from "./components/CreateObservation";
 import LogOut from "./components/LogOut";
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import UpdateProfile from "./components/UpdateProfile";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/observe" element={<CreateObservation />} />
         <Route path="/show" element={<ShowObservations />} />
         <Route path="/logout" element={<LogOut />} />
+        <Route path="/updateuser" element={<UpdateProfile />} />
       </Route>
     </Routes>
   );

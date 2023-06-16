@@ -247,6 +247,41 @@ const createUser = async (req, res) => {
     res.redirect("/register");
   }
 };
+
+const updateUser = async (req, res) => {
+  const { lastname, firstname, company, position } = req.body;
+
+  // update the database
+  try {
+    const user = await User.findOneAndUpdate(
+      { email: req.params.id },
+      {
+        lastname,
+        firstname,
+        company,
+        position,
+        attachment: req.fname, //this req.fname was added from the previous middleware
+      },
+      { new: true }
+    );
+    const updateduser = {
+      id: user.id,
+      email: user.email,
+      lastname: user.lastname,
+      firstname: user.firstname,
+      position: user.position,
+      company: user.company,
+      attachment: user.attachment,
+      auth: true,
+    };
+    console.log("updated user:", updateduser);
+    res.status(200).json(updateduser);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+};
+
 module.exports = {
   getObservations,
   getObservation,
@@ -258,4 +293,5 @@ module.exports = {
   getStats1,
   getStats2,
   createUser,
+  updateUser,
 };

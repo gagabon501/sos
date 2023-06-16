@@ -51,9 +51,9 @@ function NavBar() {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link href="#update_profile">Update Profile</Nav.Link>
+                <Nav.Link href="/updateuser">Update Profile</Nav.Link>
                 <Nav.Link href="#change_password">Change Password</Nav.Link>
-                <Link to="/logout">Logout</Link>
+                <Nav.Link href="/logout">Logout</Nav.Link>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
