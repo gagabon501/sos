@@ -27,6 +27,7 @@ const {
   getStats2,
   createUser,
   updateUser,
+  changePassword,
 } = require("../controllers/sosController");
 
 const storage = multer.memoryStorage(); //this is a good way to minimize file saving into the disk - just save it into memory as a buffer
@@ -71,17 +72,10 @@ const savePhotoDb = async (req, res, next) => {
 };
 
 /**
- * -------------- POST ROUTES ----------------
+ * -------------- USER ROUTES ----------------
  */
-// router.post(
-//   "/login",
-//   passport.authenticate("local", {
-//     successRedirect: "/",
-//     failureRedirect: "/login",
-//     failureFlash: true,
-//   })
-// );
 
+//Login a user
 router.post(
   "/login",
   (req, res, next) => {
@@ -93,46 +87,7 @@ router.post(
     successRedirect: "/api/sos/login-success",
   })
 );
-
-//POST a new user - register
-router.post("/register", upload.single("file"), savePhotoDb, createUser);
-
-//POST a new user - register
-router.post("/user/:id", upload.single("file"), savePhotoDb, updateUser);
-
-/**
- * -------------- GET ROUTES ----------------
- */
-
-router.get("/user/:id", async (req, res) => {
-  try {
-    const user = await User.findOne({ email: req.params.id });
-    console.log(user);
-    res.json({ duplicate: user ? true : false });
-  } catch (error) {
-    console.log(error);
-    res.status(401);
-  }
-});
-
-router.get("/protected-route", isAuth, (req, res, next) => {
-  res.send("You made it to the route.");
-});
-
-router.get("/admin-route", isAdmin, (req, res, next) => {
-  res.send("You made it to the admin route.");
-});
-
-// Visiting this route logs the user out
-router.get("/logout", (req, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
-});
-
+//Successful login
 router.get("/login-success", (req, res, next) => {
   console.log("Login success");
   console.log("user: ", req.user);
@@ -149,6 +104,7 @@ router.get("/login-success", (req, res, next) => {
   res.json(user);
 });
 
+//Login fail
 router.get("/login-failure", (req, res, next) => {
   console.log("Failed login");
   const user = {
@@ -165,24 +121,70 @@ router.get("/login-failure", (req, res, next) => {
   res.json(user);
 });
 
-router.get("/allobservations", getObservations);
+//Change user password
+router.post("/passwd", isAuth, changePassword);
+
+//Register a new user
+router.post("/register", upload.single("file"), savePhotoDb, createUser);
+
+//Update user profile information
+router.post("/user/:id", upload.single("file"), savePhotoDb, updateUser);
+
+//Check for duplicate user (email address)
+router.get("/user/:id", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.id });
+    console.log(user);
+    res.json({ duplicate: user ? true : false });
+  } catch (error) {
+    console.log(error);
+    res.status(401);
+  }
+});
+
+//Sample of protected route
+router.get("/protected-route", isAuth, (req, res, next) => {
+  res.send("You made it to the route.");
+});
+
+//Sample of admin route
+router.get("/admin-route", isAdmin, (req, res, next) => {
+  res.send("You made it to the admin route.");
+});
+
+//User logout
+router.get("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
+/**
+ * -------------- OBSERVATION ROUTES ----------------
+ */
+
+//Safety observation routes
+router.get("/allobservations", isAuth, getObservations);
 
 //Stats here
-router.get("/stats", getStats); //get statistics - by Type e.g. Unsafe Conditions, Unsafe Acts, etc.
-router.get("/stats1", getStats1); //get statistics - by Category on Unsafe Conditions, e.g. Housekeeping, Lifting, etc.
-router.get("/stats2", getStats2); //get statistics - by Category on Unsafe Acts, e.g. Non wearing of PPE
+router.get("/stats", isAuth, getStats); //get statistics - by Type e.g. Unsafe Conditions, Unsafe Acts, etc.
+router.get("/stats1", isAuth, getStats1); //get statistics - by Category on Unsafe Conditions, e.g. Housekeeping, Lifting, etc.
+router.get("/stats2", isAuth, getStats2); //get statistics - by Category on Unsafe Acts, e.g. Non wearing of PPE
 
 // GET a single observation
-router.get("/:id", getObservation);
+router.get("/:id", isAuth, getObservation);
 
 // POST a new observation
-router.post("/", upload.single("file"), savePhotoDb, createObservation);
+router.post("/", isAuth, upload.single("file"), savePhotoDb, createObservation);
 
 // DELETE a observation
-router.delete("/:id", deleteObservation);
+router.delete("/:id", isAuth, deleteObservation);
 
 // UPDATE a observation
-router.patch("/:id", updateObservation);
+router.patch("/:id", isAuth, updateObservation);
 
 router.get("/image/:filename", showImage);
 

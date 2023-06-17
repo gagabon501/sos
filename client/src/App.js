@@ -8,6 +8,7 @@ import CreateObservation from "./components/CreateObservation";
 import LogOut from "./components/LogOut";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import UpdateProfile from "./components/UpdateProfile";
+import ChangePassword from "./components/ChangePassword";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/show" element={<ShowObservations />} />
         <Route path="/logout" element={<LogOut />} />
         <Route path="/updateuser" element={<UpdateProfile />} />
+        <Route path="/changepassword" element={<ChangePassword />} />
       </Route>
     </Routes>
   );

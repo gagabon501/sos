@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/esm/Container";
+import Stack from "react-bootstrap/esm/Stack";
 
 import Nav from "react-bootstrap/Nav";
 
@@ -144,6 +145,12 @@ export default function LoginForm() {
                     Sign-in
                   </Button>
                 </div>
+
+                <Stack direction="horizontal">
+                  <Nav.Link href="#" style={{ margin: "auto" }}>
+                    Forgot Password?
+                  </Nav.Link>
+                </Stack>
               </Col>
             </Row>
           </Form>

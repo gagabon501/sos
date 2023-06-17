@@ -2,8 +2,6 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 
-import { Link } from "react-router-dom";
-
 function NavBar() {
   const sosuser = JSON.parse(localStorage.getItem("user"));
 
@@ -52,7 +50,7 @@ function NavBar() {
             <Offcanvas.Body>
               <Nav className="justify-content-end flex-grow-1 pe-3">
                 <Nav.Link href="/updateuser">Update Profile</Nav.Link>
-                <Nav.Link href="#change_password">Change Password</Nav.Link>
+                <Nav.Link href="/changepassword">Change Password</Nav.Link>
                 <Nav.Link href="/logout">Logout</Nav.Link>
               </Nav>
             </Offcanvas.Body>

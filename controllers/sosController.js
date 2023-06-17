@@ -282,6 +282,35 @@ const updateUser = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  const { email, password, oldpassword } = req.body;
+
+  // update the database with new user password
+  try {
+    const userpassword = await User.findOne({ email }); //get user information first including password
+    const isValid = bcrypt.compareSync(oldpassword, userpassword.password); //compare stored password with the hashed password passed from the client side
+    if (isValid) {
+      console.log("Valid password");
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await User.findOneAndUpdate(
+        { email },
+        {
+          password: hashedPassword,
+        },
+        { new: true }
+      );
+      console.log("password updated for user:", user);
+      res.status(200).json({ valid: true, message: "password updated" });
+    } else {
+      console.log("Invalid password");
+      res.status(200).json({ valid: false, message: "wrong password entered" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+};
+
 module.exports = {
   getObservations,
   getObservation,
@@ -294,4 +323,5 @@ module.exports = {
   getStats2,
   createUser,
   updateUser,
+  changePassword,
 };

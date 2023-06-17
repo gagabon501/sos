@@ -15,7 +15,7 @@ import Message from "./Message";
 import Progress from "./Progress";
 
 export default function UpdateProfile() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user")); //get user info from localStorage
 
   const formLastnameRef = useRef(user.lastname);
   const formFirstnameRef = useRef(user.firstname);
@@ -49,7 +49,6 @@ export default function UpdateProfile() {
   async function submitHandler(e) {
     e.preventDefault();
 
-    // const email = JSON.parse(localStorage.getItem("user")).email;
     const enteredLastname = formLastnameRef.current.value;
     const enteredFirstname = formFirstnameRef.current.value;
     const enteredCompany = formCompanyRef.current.value;
