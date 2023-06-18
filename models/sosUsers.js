@@ -32,6 +32,8 @@ const sosUserSchema = new Schema(
       type: String,
     },
     admin: { type: Boolean },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
   },
   { timestamps: true }
 );

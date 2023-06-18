@@ -9,12 +9,14 @@ import LogOut from "./components/LogOut";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import UpdateProfile from "./components/UpdateProfile";
 import ChangePassword from "./components/ChangePassword";
+import ForgotPassword from "./components/ForgotPassword";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/login" element={<LoginForm />} />
       <Route path="/register" element={<RegisterForm />} />
+      <Route path="/forgot" element={<ForgotPassword />} />
 
       <Route element={<ProtectedRoutes />}>
         <Route path="/" element={<Start />} />

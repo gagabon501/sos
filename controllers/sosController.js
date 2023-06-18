@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const Observation = require("../models/sosObservations");
 const User = require("../models/sosUsers");
 const bcrypt = require("bcrypt");
+const async = require("async");
+const crypto = require("crypto");
+
+const { sendMail } = require("../helpers/gaglib");
 
 // get all observations
 const getObservations = async (req, res) => {
@@ -311,6 +315,141 @@ const changePassword = async (req, res) => {
   }
 };
 
+// forgot password
+
+const forgot_post = (req, res, next) => {
+  async.waterfall(
+    [
+      function (done) {
+        crypto.randomBytes(20, function (err, buf) {
+          var token = buf.toString("hex");
+          done(err, token);
+        });
+      },
+      function (token, done) {
+        User.findOne({ email: req.body.email }, function (err, user) {
+          if (!user) {
+            req.flash("error", "User not found!");
+            return res.redirect("/forgot");
+            //res.render('forgot',{errmsg: "User not found!"})
+          }
+
+          user.resetPasswordToken = token;
+          user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+          user.save(function (err) {
+            done(err, token, user);
+          });
+        });
+      },
+      function (token, user, done) {
+        var recvr = user.email,
+          subject = "Safety Observation System Password Reset",
+          emailbody =
+            "You are receiving this because you (or someone else) has requested the reset of the password for your account.\n\n" +
+            "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
+            "http://" +
+            req.headers.host +
+            "/reset/" +
+            token +
+            "\n\n" +
+            "If you did not request this, please ignore this email and your password will remain unchanged.\n";
+
+        sendMail(recvr, subject, emailbody); //located at the top of this file
+        res.status(200).json({ message: "Reset email sent" });
+      },
+    ],
+    function (err) {
+      if (err) return next(err);
+      res.redirect("/forgot");
+    }
+  );
+};
+
+const reset_token_get = (req, res) => {
+  User.findOne(
+    {
+      resetPasswordToken: req.params.token,
+      resetPasswordExpires: { $gt: Date.now() },
+    },
+    function (err, user) {
+      if (!user) {
+        req.flash("error", "Password reset token is invalid or has expired.");
+        return res.redirect("/forgot");
+      }
+      res.render("reset", { token: req.params.token, errmsg: "" });
+    }
+  );
+};
+
+const reset_token_post = (req, res) => {
+  async.waterfall(
+    [
+      function (done) {
+        User.findOne(
+          {
+            resetPasswordToken: req.params.token,
+            resetPasswordExpires: { $gt: Date.now() },
+          },
+          function (err, user) {
+            if (!user) {
+              req.flash(
+                "error",
+                "Password reset token is invalid or has expired."
+              );
+              return res.redirect("back");
+            }
+            if (req.body.password === req.body.confirm) {
+              bcrypt.genSalt(10, function (err, salt) {
+                if (err) return next(err);
+                bcrypt.hash(req.body.password, salt, function (err, hash) {
+                  if (err) return next(err);
+                  req.body.password = hash;
+                  var userData = new User({
+                    password: req.body.password,
+                    //passwordConf: req.body.confirm,
+                    _id: user._id,
+                  });
+                  User.findByIdAndUpdate(
+                    user._id,
+                    userData,
+                    {},
+                    function (err, theuser) {
+                      if (err) {
+                        return next(err);
+                      }
+                    }
+                  );
+                });
+              });
+              user.resetPasswordToken = undefined;
+              user.resetPasswordExpires = undefined;
+
+              var recvr = user.email,
+                subject = "FCC B+I Induction Booking - Password changed",
+                emailbody =
+                  "Hello,\n\n" +
+                  "This is a confirmation that the password for your account " +
+                  user.email +
+                  " has just been changed.\n";
+              sendMail(recvr, subject, emailbody); //located at the top of this file
+
+              req.flash("success", "Success! Your password has been changed.");
+              res.redirect("/");
+            } else {
+              req.flash("error", "Passwords do not match.");
+              return res.redirect("back");
+            }
+          }
+        );
+      },
+    ],
+    function (err) {
+      res.redirect("/");
+    }
+  );
+};
+
 module.exports = {
   getObservations,
   getObservation,
@@ -324,4 +463,7 @@ module.exports = {
   createUser,
   updateUser,
   changePassword,
+  forgot_post,
+  reset_token_get,
+  reset_token_post,
 };

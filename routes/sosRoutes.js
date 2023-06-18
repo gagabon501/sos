@@ -28,6 +28,9 @@ const {
   createUser,
   updateUser,
   changePassword,
+  forgot_post,
+  reset_token_get,
+  reset_token_post,
 } = require("../controllers/sosController");
 
 const storage = multer.memoryStorage(); //this is a good way to minimize file saving into the disk - just save it into memory as a buffer
@@ -123,6 +126,11 @@ router.get("/login-failure", (req, res, next) => {
 
 //Change user password
 router.post("/passwd", isAuth, changePassword);
+
+//Forgot user password
+router.post("/forgot", forgot_post);
+router.get("/reset/:token", reset_token_get);
+router.post("/reset/:token", reset_token_post);
 
 //Register a new user
 router.post("/register", upload.single("file"), savePhotoDb, createUser);

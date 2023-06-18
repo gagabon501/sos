@@ -12,8 +12,6 @@ import Stack from "react-bootstrap/esm/Stack";
 
 import Nav from "react-bootstrap/Nav";
 
-// import { UserContext } from "../context/UserContext";
-
 export default function LoginForm() {
   const formEmailRef = useRef();
   const formPasswordRef = useRef();
@@ -147,7 +145,7 @@ export default function LoginForm() {
                 </div>
 
                 <Stack direction="horizontal">
-                  <Nav.Link href="#" style={{ margin: "auto" }}>
+                  <Nav.Link href="/forgot" style={{ margin: "auto" }}>
                     Forgot Password?
                   </Nav.Link>
                 </Stack>
