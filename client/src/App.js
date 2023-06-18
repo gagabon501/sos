@@ -10,6 +10,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import UpdateProfile from "./components/UpdateProfile";
 import ChangePassword from "./components/ChangePassword";
 import ForgotPassword from "./components/ForgotPassword";
+import ShowUsers from "./components/ShowUsers";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/logout" element={<LogOut />} />
         <Route path="/updateuser" element={<UpdateProfile />} />
         <Route path="/changepassword" element={<ChangePassword />} />
+        <Route path="/showuser" element={<ShowUsers />} />
       </Route>
     </Routes>
   );
