@@ -321,7 +321,7 @@ const forgot_post = (req, res, next) => {
   async.waterfall(
     [
       function (done) {
-        crypto.randomBytes(20, function (err, buf) {
+        crypto.randomBytes(4, function (err, buf) {
           var token = buf.toString("hex");
           done(err, token);
         });
@@ -334,7 +334,7 @@ const forgot_post = (req, res, next) => {
             //res.render('forgot',{errmsg: "User not found!"})
           }
 
-          user.resetPasswordToken = token;
+          user.resetPasswordToken = token.toUpperCase();
           user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
           user.save(function (err) {
@@ -347,37 +347,38 @@ const forgot_post = (req, res, next) => {
           subject = "Safety Observation System Password Reset",
           emailbody =
             "You are receiving this because you (or someone else) has requested the reset of the password for your account.\n\n" +
-            "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
-            "http://" +
-            req.headers.host +
-            "/api/sos/reset/" +
-            token +
+            "Please enter the following code in the verification box: " +
+            token.toUpperCase() +
             "\n\n" +
             "If you did not request this, please ignore this email and your password will remain unchanged.\n";
 
         sendMail(recvr, subject, emailbody); //located at the top of this file
-        res.status(200).json({ message: "Reset email sent" });
+        res.status(200).json({ message: "Reset email sent", valid: true });
       },
     ],
     function (err) {
       if (err) return next(err);
-      res.redirect("/api/sos/forgot");
+      // res.redirect("/api/sos/forgot");
     }
   );
 };
 
 const reset_token_get = (req, res) => {
+  // console.log(req.params.token);
   User.findOne(
     {
       resetPasswordToken: req.params.token,
       resetPasswordExpires: { $gt: Date.now() },
     },
     function (err, user) {
-      if (!user) {
+      // console.log("user: ", user);
+      if (user === null) {
         req.flash("error", "Password reset token is invalid or has expired.");
-        return res.redirect("/api/sos/forgot");
+        // return res.redirect("/api/sos/forgot");
+        res.status(200).json({ token: "not found" });
+      } else {
+        res.status(200).json({ token: user.resetPasswordToken });
       }
-      res.status(200).json({ token: req.params.token });
     }
   );
 };
@@ -449,6 +450,27 @@ const reset_token_post = (req, res) => {
     }
   );
 };
+const resetPassword = async (req, res) => {
+  const { email, password } = req.body;
+
+  // update the database with new user password
+  try {
+    // const userpassword = await User.findOne({ email }); //get user information first including password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.findOneAndUpdate(
+      { email },
+      {
+        password: hashedPassword,
+      },
+      { new: true }
+    );
+    console.log("password updated for user:", user);
+    res.status(200).json({ valid: true, message: "password updated" });
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+};
 
 module.exports = {
   getObservations,
@@ -466,4 +488,5 @@ module.exports = {
   forgot_post,
   reset_token_get,
   reset_token_post,
+  resetPassword,
 };
