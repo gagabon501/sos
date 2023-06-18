@@ -330,7 +330,7 @@ const forgot_post = (req, res, next) => {
         User.findOne({ email: req.body.email }, function (err, user) {
           if (!user) {
             req.flash("error", "User not found!");
-            return res.redirect("/forgot");
+            return res.redirect("/api/sos/forgot");
             //res.render('forgot',{errmsg: "User not found!"})
           }
 
@@ -350,7 +350,7 @@ const forgot_post = (req, res, next) => {
             "Please click on the following link, or paste this into your browser to complete the process:\n\n" +
             "http://" +
             req.headers.host +
-            "/reset/" +
+            "/api/sos/reset/" +
             token +
             "\n\n" +
             "If you did not request this, please ignore this email and your password will remain unchanged.\n";
@@ -361,7 +361,7 @@ const forgot_post = (req, res, next) => {
     ],
     function (err) {
       if (err) return next(err);
-      res.redirect("/forgot");
+      res.redirect("/api/sos/forgot");
     }
   );
 };
@@ -375,9 +375,9 @@ const reset_token_get = (req, res) => {
     function (err, user) {
       if (!user) {
         req.flash("error", "Password reset token is invalid or has expired.");
-        return res.redirect("/forgot");
+        return res.redirect("/api/sos/forgot");
       }
-      res.render("reset", { token: req.params.token, errmsg: "" });
+      res.status(200).json({ token: req.params.token });
     }
   );
 };
@@ -426,7 +426,7 @@ const reset_token_post = (req, res) => {
               user.resetPasswordExpires = undefined;
 
               var recvr = user.email,
-                subject = "FCC B+I Induction Booking - Password changed",
+                subject = "Safety Observation System - Password changed",
                 emailbody =
                   "Hello,\n\n" +
                   "This is a confirmation that the password for your account " +
