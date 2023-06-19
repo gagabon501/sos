@@ -24,17 +24,17 @@ function SideMenu() {
             </Nav.Link>
           </Nav.Item>
           <Nav.Item fill={true}>
-            <Nav.Link href="/login">
+            <Nav.Link href="/undercons">
               <MenuBox text="Generate Report" img="generate1.png" />
             </Nav.Link>
           </Nav.Item>
           <Nav.Item fill={true}>
-            <Nav.Link href="/login">
+            <Nav.Link href="/showuser">
               <MenuBox text="Manage Users" img="Edit_Icon1.png" />
             </Nav.Link>
           </Nav.Item>
           <Nav.Item fill={true}>
-            <Nav.Link href="/login">
+            <Nav.Link href="/undercons">
               <MenuBox text="Manage Companies" img="Management_Icon1.png" />
             </Nav.Link>
           </Nav.Item>

@@ -11,6 +11,7 @@ import UpdateProfile from "./components/UpdateProfile";
 import ChangePassword from "./components/ChangePassword";
 import ForgotPassword from "./components/ForgotPassword";
 import ShowUsers from "./components/ShowUsers";
+import UnderConstruction from "./components/underConstruction";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/updateuser" element={<UpdateProfile />} />
         <Route path="/changepassword" element={<ChangePassword />} />
         <Route path="/showuser" element={<ShowUsers />} />
+        <Route path="/undercons" element={<UnderConstruction />} />
       </Route>
     </Routes>
   );

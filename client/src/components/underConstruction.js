@@ -1,21 +1,26 @@
 import { React } from "react";
-import { Link } from "react-router-dom";
-import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/esm/Row";
+import Col from "react-bootstrap/esm/Col";
+import NavBar from "./NavBar";
 
-export default function ShowObservations() {
+export default function UnderConstruction() {
   return (
-    <Container>
-      <Alert className="text-center mt-5" variant="danger">
-        Oooops..Sorry..Page under construction
-      </Alert>
-      <img style={{ width: "100%" }} src="UnderConstruction.jpg" />
-      <Link to="/">
-        <Button variant="primary" style={{ marginTop: "10px" }}>
-          Home
-        </Button>
-      </Link>
-    </Container>
+    <>
+      <NavBar />
+
+      <Row>
+        <Col lg={6} className="m-auto mt-5">
+          <Alert className="text-center mt-5" variant="danger">
+            Oooops..Sorry..Page under construction
+          </Alert>
+          <img
+            style={{ width: "100%" }}
+            src="UnderConstruction.jpg"
+            alt="underconstruction"
+          />
+        </Col>
+      </Row>
+    </>
   );
 }
