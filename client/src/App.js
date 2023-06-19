@@ -25,10 +25,11 @@ const App = () => {
         <Route path="/dashboard" element={<Start />} />
         <Route path="/observe" element={<CreateObservation />} />
         <Route path="/show" element={<ShowObservations />} />
+        <Route path="/showuser" element={<ShowUsers />} />
         <Route path="/logout" element={<LogOut />} />
         <Route path="/updateuser" element={<UpdateProfile />} />
         <Route path="/changepassword" element={<ChangePassword />} />
-        <Route path="/showuser" element={<ShowUsers />} />
+
         <Route path="/undercons" element={<UnderConstruction />} />
       </Route>
     </Routes>
