@@ -354,13 +354,17 @@ const forgot_post = (req, res, next) => {
         User.findOne({ email: req.body.email }, function (err, user) {
           if (!user) {
             req.flash("error", "User not found!");
-            return res.redirect("/api/sos/forgot");
+            return res
+              .status(200)
+              .json({ message: "User does not exist", valid: false });
+
             //res.render('forgot',{errmsg: "User not found!"})
           }
 
           user.resetPasswordToken = token.toUpperCase();
           user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
+          //save token and expiry into database (User)
           user.save(function (err) {
             done(err, token, user);
           });

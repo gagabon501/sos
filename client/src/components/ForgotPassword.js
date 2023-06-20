@@ -62,6 +62,9 @@ export default function ForgotPassword() {
       if (response.data.valid) {
         setVerifyCode(true);
         setErrorMessage("Please check your email. Verification code sent.");
+      } else {
+        setVerifyCode(false);
+        setErrorMessage("User does not exist.");
       }
     } catch (err) {
       console.log(err);
@@ -114,7 +117,10 @@ export default function ForgotPassword() {
         <Col sm={4} className="m-auto mt-5">
           <div>
             {errorMessage && (
-              <div className="ms-auto text-white text-bold text-center">
+              <div
+                className="ms-auto text-bold text-center"
+                style={{ color: "red", backgroundColor: "yellow" }}
+              >
                 {errorMessage}
               </div>
             )}
