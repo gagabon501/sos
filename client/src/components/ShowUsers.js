@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
+import axios from "axios";
 
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/Row";
@@ -7,86 +9,33 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Footer from "./Footer";
 
-import Button from "react-bootstrap/Button";
 import UserProfile from "./UserProfile";
 import NavBar from "./NavBar";
 import SideMenu from "./SideMenu";
 
+import { useObservationsContext } from "../hooks/useObservationsContext";
+
 export default function ShowUsers() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const usersList = [
-    {
-      id: "1",
-      firstname: "May",
-      lastname: "Scheme",
-      company: "Leighs Construction",
-      imgsrc: "SOS_Logo.png",
-    },
-    {
-      id: "2",
-      firstname: "John",
-      lastname: "Doe",
-      company: "Fullers Construction",
-      imgsrc: "SOS_Logo.png",
-    },
-    {
-      id: "3",
-      firstname: "Matt",
-      lastname: "Smith",
-      company: "William Corporation",
-      imgsrc: "SOS_Logo.png",
-    },
-    {
-      id: "4",
-      firstname: "May",
-      lastname: "Scheme",
-      company: "Leighs Construction",
-      imgsrc: "SOS_Logo.png",
-    },
-    {
-      id: "5",
-      firstname: "John",
-      lastname: "Doe",
-      company: "Fullers Construction",
-      imgsrc: "SOS_Logo.png",
-    },
-    {
-      id: "6",
-      firstname: "Matt",
-      lastname: "Smith",
-      company: "William Corporation",
-      imgsrc: "SOS_Logo.png",
-    },
-    {
-      id: "7",
-      firstname: "May",
-      lastname: "Scheme",
-      company: "Leighs Construction",
-      imgsrc: "SOS_Logo.png",
-    },
-    {
-      id: "8",
-      firstname: "John",
-      lastname: "Doe",
-      company: "Fullers Construction",
-      imgsrc: "SOS_Logo.png",
-    },
-    {
-      id: "9",
-      firstname: "Matt",
-      lastname: "Smith",
-      company: "William Corporation",
-      imgsrc: "SOS_Logo.png",
-    },
-    {
-      id: "10",
-      firstname: "Matthew",
-      lastname: "Smithsonina",
-      company: "William Corporation",
-      imgsrc: "SOS_Logo.png",
-    },
-  ];
+  const { usersList, dispatch } = useObservationsContext();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get("/api/sos/allusers");
+        console.log("Client side: ", response.data);
+
+        dispatch({ type: "SET_USERS", payload: response.data }); //now using 'dispatch' for global state management -- 03-Sept-22
+      } catch (err) {
+        console.log(err);
+      }
+      setIsLoading(false);
+    };
+
+    fetchUsers();
+  }, [dispatch]);
 
   return (
     <div>

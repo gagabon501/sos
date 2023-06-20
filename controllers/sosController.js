@@ -227,6 +227,13 @@ const getStats2 = async (req, res) => {
   }
 };
 
+// get all users
+const getUsers = async (req, res) => {
+  const users = await User.find({}).sort({ lastname: -1 });
+  console.log("server side users: ", users);
+  res.status(200).json(users);
+};
+
 // create a new user
 const createUser = async (req, res) => {
   const { email, password, lastname, firstname, company, position } = req.body;
@@ -284,6 +291,23 @@ const updateUser = async (req, res) => {
     console.log(error);
     res.status(500);
   }
+};
+
+// delete a user
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "No such user" });
+  }
+
+  const user = await User.findOneAndDelete({ _id: id });
+
+  if (!user) {
+    return res.status(400).json({ error: "No such user" });
+  }
+
+  res.status(200).json(user);
 };
 
 const changePassword = async (req, res) => {
@@ -489,4 +513,6 @@ module.exports = {
   reset_token_get,
   reset_token_post,
   resetPassword,
+  getUsers,
+  deleteUser,
 };

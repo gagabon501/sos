@@ -18,6 +18,20 @@ export const observationsReducer = (state, action) => {
           (obs) => obs._id !== action.payload._id
         ),
       };
+    case "SET_USERS":
+      return {
+        usersList: action.payload,
+      };
+    case "CREATE_USER":
+      return {
+        usersList: [action.payload, ...state.usersList],
+      };
+    case "DELETE_USER":
+      return {
+        usersList: state.usersList.filter(
+          (obs) => obs._id !== action.payload._id
+        ),
+      };
     default:
       return state;
   }
