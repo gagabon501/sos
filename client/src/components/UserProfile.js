@@ -44,11 +44,6 @@ const UserProfile = ({ users }) => {
     setObsTitle(title);
   };
 
-  //   const handleClick = (e) => {
-  //     console.log(e.target);
-  //     setProfile(true);
-  //   };
-
   const handleClickEdit = (obs_id) => {
     console.log("Clicked Edit button");
     setObsId(obs_id);
@@ -106,7 +101,7 @@ const UserProfile = ({ users }) => {
           onHide={handleClose}
           backdrop="static"
           keyboard={false}
-          size="xl"
+          size="l"
         >
           <Modal.Header closeButton>
             <Modal.Title>
