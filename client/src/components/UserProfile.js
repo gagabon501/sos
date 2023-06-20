@@ -9,6 +9,7 @@ import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import UpdateProfile from "./UpdateProfile";
 
 const UserProfile = ({ users }) => {
   const { dispatch } = useObservationsContext();
@@ -138,20 +139,24 @@ const UserProfile = ({ users }) => {
         </Modal>
       </Container>
 
-      <Container>
+      <Container fluid>
         <Modal
           show={undercons}
           onHide={handleEditClose}
           backdrop="static"
           keyboard={false}
+          size="xl"
+          centered
         >
-          <Modal.Header closeButton>
-            <Modal.Title className="text-center">
-              Component under construction
-            </Modal.Title>
-          </Modal.Header>
+          <Modal.Header closeButton></Modal.Header>
+          <Modal.Body className="show-grid">
+            <Container fluid>
+              <UpdateProfile shownav={false} />
+            </Container>
+          </Modal.Body>
         </Modal>
       </Container>
+      <Container></Container>
     </>
   );
 };

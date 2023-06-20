@@ -143,7 +143,13 @@ router.get("/allusers", isAuth, getUsers);
 router.post("/register", upload.single("file"), savePhotoDb, createUser);
 
 //Update user profile information
-router.post("/user/:id", upload.single("file"), savePhotoDb, updateUser);
+router.post(
+  "/user/:id",
+  isAuth,
+  upload.single("file"),
+  savePhotoDb,
+  updateUser
+);
 
 //Check for duplicate user (email address)
 router.get("/user/:id", async (req, res) => {

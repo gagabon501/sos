@@ -27,7 +27,7 @@ const App = () => {
         <Route path="/show" element={<ShowObservations />} />
         <Route path="/showuser" element={<ShowUsers />} />
         <Route path="/logout" element={<LogOut />} />
-        <Route path="/updateuser" element={<UpdateProfile />} />
+        <Route path="/updateuser" element={<UpdateProfile shownav={true} />} />
         <Route path="/changepassword" element={<ChangePassword />} />
 
         <Route path="/undercons" element={<UnderConstruction />} />

@@ -15,7 +15,7 @@ import NavBar from "./NavBar";
 import Message from "./Message";
 import Progress from "./Progress";
 
-export default function UpdateProfile() {
+export default function UpdateProfile({ shownav }) {
   const user = JSON.parse(localStorage.getItem("user")); //get user info from localStorage
 
   const formLastnameRef = useRef(user.lastname);
@@ -100,10 +100,10 @@ export default function UpdateProfile() {
 
   return (
     <div>
-      <Container fluid>
-        <NavBar />
+      {shownav && <NavBar />}
+      <Container>
         <Row>
-          <Col sm={8} className="m-auto mt-5">
+          <Col sm={12} className={shownav ? "m-auto mt-5" : "m-auto"}>
             <Card>
               <Card.Header className="bg-primary text-center text-white">
                 <h3>Update User Profile</h3>
