@@ -34,6 +34,11 @@ const {
   resetPassword,
   getUsers,
   deleteUser,
+  getCompanies,
+  getCompany,
+  createCompany,
+  updateCompany,
+  deleteCompany,
 } = require("../controllers/sosController");
 
 const storage = multer.memoryStorage(); //this is a good way to minimize file saving into the disk - just save it into memory as a buffer
@@ -80,6 +85,10 @@ const savePhotoDb = async (req, res, next) => {
 /**
  * -------------- USER ROUTES ----------------
  */
+
+// POST a new company
+router.post("/company", createCompany);
+router.get("/allcompanies", getCompanies);
 
 //Login a user
 router.post(
@@ -211,5 +220,22 @@ router.delete("/:id", isAuth, deleteObservation);
 router.patch("/:id", isAuth, updateObservation);
 
 router.get("/image/:filename", showImage);
+
+/**
+ * -------------- COMPANY ROUTES ----------------
+ */
+//Companies routes
+
+// POST a new company
+// router.post("/company", createCompany);
+
+// POST a new company
+router.get("/company/:id", getCompany);
+
+// DELETE a company
+router.delete("/company/:id", deleteCompany);
+
+// UPDATE a observation
+router.patch("/company/:id", updateCompany);
 
 module.exports = router;

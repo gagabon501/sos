@@ -1,11 +1,19 @@
 const mongoose = require("mongoose");
+
+//Models
 const Observation = require("../models/sosObservations");
 const User = require("../models/sosUsers");
+const Company = require("../models/sosCompany");
+
 const bcrypt = require("bcrypt");
 const async = require("async");
 const crypto = require("crypto");
 
 const { sendMail } = require("../helpers/gaglib");
+
+/**
+ * -------------- OBSERVATION CONTROLLERS ----------------
+ */
 
 // get all observations
 const getObservations = async (req, res) => {
@@ -108,6 +116,106 @@ const updateObservation = async (req, res) => {
   res.status(200).json(observation);
 };
 
+/**
+ * -------------- COMPANY CONTROLLERS ----------------
+ */
+
+// get all companies
+const getCompanies = async (req, res) => {
+  console.log("List companies here!");
+  const companies = await Company.find({}).sort({ createdAt: -1 });
+  console.log("server side: ", companies);
+  res.status(200).json(companies);
+};
+
+// get a single observation
+const getCompany = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "No such company" });
+  }
+
+  const company = await Company.findById(id);
+
+  if (!company) {
+    return res.status(404).json({ error: "No such company" });
+  }
+
+  res.status(200).json(company);
+};
+
+// create a new company
+const createCompany = async (req, res) => {
+  console.log("Hey I am here!");
+  console.log(req.body);
+  const {
+    company,
+    address,
+    contactname,
+    contactposition,
+    contactmobile,
+    contactemail,
+  } = req.body;
+
+  // add to the database
+  try {
+    const companynew = await Company.create({
+      company,
+      address,
+      contactname,
+      contactposition,
+      contactmobile,
+      contactemail,
+    });
+    res.status(200).json(companynew);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// delete a company
+const deleteCompany = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "No such company" });
+  }
+
+  const company = await Company.findOneAndDelete({ _id: id });
+
+  if (!company) {
+    return res.status(400).json({ error: "No such company" });
+  }
+
+  res.status(200).json(company);
+};
+
+// update a company
+const updateCompany = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "No such company" });
+  }
+
+  const company = await Company.findOneAndUpdate(
+    { _id: id },
+    {
+      ...req.body,
+    }
+  );
+
+  if (!company) {
+    return res.status(400).json({ error: "No such company" });
+  }
+
+  res.status(200).json(company);
+};
+
+/**
+ * -------------- SHOW IMAGE CONTROLLER ----------------
+ */
 const showImage = (req, res) => {
   // console.log(mongoose.connection.db);
   let gridFSBucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
@@ -122,6 +230,10 @@ const showImage = (req, res) => {
 // const showImage = (req, res) => {
 //   res.redirect(`/images/${req.params.filename}`); //well done mate! re-routed the API call! now using static file instead of saving into mongodb: 13-May-23
 // };
+
+/**
+ * -------------- STATISTICS CONTROLLERS ----------------
+ */
 
 //The following codes are really done well! I re-factored the code so that there is a single function to retrieve data for statistics.
 //This is parameterized so that the filter conditions are passed here from the calling function. This is contained in the 'soscat' parameter
@@ -226,6 +338,10 @@ const getStats2 = async (req, res) => {
     return res.status(500).json(error.message);
   }
 };
+
+/**
+ * -------------- USER CONTROLLERS ----------------
+ */
 
 // get all users
 const getUsers = async (req, res) => {
@@ -519,4 +635,9 @@ module.exports = {
   resetPassword,
   getUsers,
   deleteUser,
+  getCompanies,
+  getCompany,
+  createCompany,
+  updateCompany,
+  deleteCompany,
 };

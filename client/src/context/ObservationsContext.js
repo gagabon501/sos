@@ -32,6 +32,11 @@ export const observationsReducer = (state, action) => {
           (obs) => obs._id !== action.payload._id
         ),
       };
+    case "SET_COMPANIES":
+      return {
+        companies: action.payload,
+      };
+
     default:
       return state;
   }

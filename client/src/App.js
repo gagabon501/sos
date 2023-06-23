@@ -12,6 +12,7 @@ import ChangePassword from "./components/ChangePassword";
 import ForgotPassword from "./components/ForgotPassword";
 import ShowUsers from "./components/ShowUsers";
 import UnderConstruction from "./components/underConstruction";
+import ShowCompanies from "./components/ShowCompanies";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/observe" element={<CreateObservation />} />
         <Route path="/show" element={<ShowObservations />} />
         <Route path="/showuser" element={<ShowUsers />} />
+        <Route path="/showcompanies" element={<ShowCompanies />} />
         <Route path="/logout" element={<LogOut />} />
         <Route path="/updateuser" element={<UpdateProfile shownav={true} />} />
         <Route path="/changepassword" element={<ChangePassword />} />

@@ -163,6 +163,8 @@ export default function ObservationForm() {
   async function submitHandler(e) {
     e.preventDefault();
 
+    console.log("Event: ", e);
+
     const enteredType = formObservationTypeRef.current.value;
     const enteredObsCategory = formObsCategoryRef.current.value;
     const enteredformLocation = formLocationRef.current.value;
@@ -181,6 +183,8 @@ export default function ObservationForm() {
     formData.append("reportedTo", enteredReportedTo);
     formData.append("yourName", enteredYourName);
     formData.append("file", file);
+
+    console.log(formData);
 
     try {
       const response = await axios.post("/api/sos/", formData, {
