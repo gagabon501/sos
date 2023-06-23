@@ -3,6 +3,8 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { useObservationsContext } from "../hooks/useObservationsContext";
+
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
@@ -25,6 +27,8 @@ export default function CompanyForm({ setAdding }) {
 
   const navigate = useNavigate();
   // const history = useHistory();
+
+  const { companies, dispatch } = useObservationsContext();
 
   async function submitHandler(e) {
     e.preventDefault();
@@ -50,6 +54,7 @@ export default function CompanyForm({ setAdding }) {
 
       console.log(response.data);
       setAdding(false);
+      dispatch({ type: "CREATE_COMPANY", payload: response.data }); //now using 'dispatch' for global state management -- 03-Sept-22
 
       // navigate("/", { replace: true });
 

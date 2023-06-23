@@ -36,6 +36,16 @@ export const observationsReducer = (state, action) => {
       return {
         companies: action.payload,
       };
+    case "CREATE_COMPANY":
+      return {
+        companies: [action.payload, ...state.companies],
+      };
+    case "DELETE_COMPANY":
+      return {
+        companies: state.companies.filter(
+          (obs) => obs._id !== action.payload._id
+        ),
+      };
 
     default:
       return state;
