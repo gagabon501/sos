@@ -15,13 +15,13 @@ import NavBar from "./NavBar";
 import Message from "./Message";
 import Progress from "./Progress";
 
-export default function UpdateProfile({ shownav }) {
-  const user = JSON.parse(localStorage.getItem("user")); //get user info from localStorage
+export default function UpdateProfile({ shownav, userdata }) {
+  // const user = JSON.parse(localStorage.getItem("user")); //get user info from localStorage - not the right way. Get the user from what was clicked to be edited
 
-  const formLastnameRef = useRef(user.lastname);
-  const formFirstnameRef = useRef(user.firstname);
-  const formCompanyRef = useRef(user.company);
-  const formPositionRef = useRef(user.position);
+  const formLastnameRef = useRef(userdata.lastname);
+  const formFirstnameRef = useRef(userdata.firstname);
+  const formCompanyRef = useRef(userdata.company);
+  const formPositionRef = useRef(userdata.position);
 
   const [error, setError] = useState(null);
   const [file, setFile] = useState("");
@@ -68,7 +68,7 @@ export default function UpdateProfile({ shownav }) {
 
     try {
       const response = await axios.post(
-        "/api/sos/user/" + user.email,
+        "/api/sos/user/" + userdata.email,
         formData,
         {
           headers: {
@@ -117,7 +117,7 @@ export default function UpdateProfile({ shownav }) {
                         <Form.Label>Firstname</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder={user.firstname}
+                          placeholder={userdata.firstname}
                           ref={formFirstnameRef}
                           required
                         />
@@ -128,7 +128,7 @@ export default function UpdateProfile({ shownav }) {
                         <Form.Label>Lastname</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder={user.lastname}
+                          placeholder={userdata.lastname}
                           ref={formLastnameRef}
                           required
                         />
@@ -141,7 +141,7 @@ export default function UpdateProfile({ shownav }) {
                         <Form.Label>Company</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder={user.company}
+                          placeholder={userdata.company}
                           ref={formCompanyRef}
                           required
                         />
@@ -152,7 +152,7 @@ export default function UpdateProfile({ shownav }) {
                         <Form.Label>Position</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder={user.position}
+                          placeholder={userdata.position}
                           ref={formPositionRef}
                           required
                         />

@@ -21,6 +21,7 @@ const UserProfile = ({ users }) => {
   const [obstitle, setObsTitle] = useState("");
   const [delshow, setDelShow] = useState(false);
   const [undercons, setUndercons] = useState(false);
+  const [userdata, setUserData] = useState(null);
 
   const handleClose = () => setShow(false);
   const handleDelClose = () => setDelShow(false);
@@ -45,10 +46,11 @@ const UserProfile = ({ users }) => {
     setObsTitle(title);
   };
 
-  const handleClickEdit = (obs_id) => {
+  const handleClickEdit = (obs_id, user) => {
     console.log("Clicked Edit button");
     setObsId(obs_id);
     setUndercons(true);
+    setUserData(user);
   };
   const handleClickDelete = (obs_id) => {
     setDelShow(true);
@@ -85,7 +87,7 @@ const UserProfile = ({ users }) => {
             icon={faEdit}
             className="text-primary"
             style={{ fontSize: "16px", marginRight: "5px" }}
-            onClick={() => handleClickEdit(user._id)}
+            onClick={() => handleClickEdit(user._id, user)}
           />
           <FontAwesomeIcon
             icon={faEraser}
@@ -151,7 +153,7 @@ const UserProfile = ({ users }) => {
           <Modal.Header closeButton></Modal.Header>
           <Modal.Body className="show-grid">
             <Container fluid>
-              <UpdateProfile shownav={false} />
+              <UpdateProfile shownav={false} userdata={userdata} />
             </Container>
           </Modal.Body>
         </Modal>
