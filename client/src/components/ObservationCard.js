@@ -89,6 +89,10 @@ export default function ObservationCard({ observations }) {
                   ? obs.description.substr(0, 24) + "..."
                   : obs.description}
               </div>
+              <div style={{ color: "red" }}>
+                Due date: {moment(obs.duedate).format("DD-MMM-YYYY")}
+              </div>
+              <div>Status: {obs.status}</div>
             </Card.Body>
             <Card.Footer className="fs-5">
               <Button

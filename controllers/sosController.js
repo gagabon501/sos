@@ -129,7 +129,8 @@ const updateObservation = async (req, res) => {
     { _id: id },
     {
       duedate: req.body.duedate,
-    }
+    },
+    { new: true }
   );
 
   if (!observation) {
@@ -137,6 +138,7 @@ const updateObservation = async (req, res) => {
   }
   req.body._id = id;
   console.log(req.body);
+  console.log(observation);
 
   res.status(200).json(observation);
 };
