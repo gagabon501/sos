@@ -71,6 +71,19 @@ const createObservation = async (req, res) => {
       yourName,
       attachment: req.fname, //this req.fname was added from the previous middleware
     });
+    var recvr = involvedCompany,
+      subject = "Safety Observation: " + observation._id,
+      emailbody =
+        "The following observation was raised to your company: " +
+        "\n\n" +
+        "Type: " +
+        observation.observationType +
+        "\n" +
+        "Description: " +
+        observation.description;
+
+    sendMail(recvr, subject, emailbody);
+
     res.status(200).json(observation);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -498,7 +511,7 @@ const forgot_post = (req, res, next) => {
             "\n\n" +
             "If you did not request this, please ignore this email and your password will remain unchanged.\n";
 
-        sendMail(recvr, subject, emailbody); //located at the top of this file
+        sendMail(recvr, subject, emailbody);
         res.status(200).json({ message: "Reset email sent", valid: true });
       },
     ],

@@ -34,7 +34,7 @@ export default function ShowCompanies() {
       setIsLoading(true);
       try {
         const response = await axios.get("/api/sos/allcompanies");
-        console.log("Client side: ", response.data);
+        // console.log("Client side: ", response.data);
 
         dispatch({ type: "SET_COMPANIES", payload: response.data }); //now using 'dispatch' for global state management
       } catch (err) {

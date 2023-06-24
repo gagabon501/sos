@@ -1,5 +1,5 @@
 import React from "react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 // import { useObservationsContext } from "../hooks/useObservationsContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -37,6 +37,31 @@ export default function ObservationForm() {
   const [uploadPercentage, setUploadPercentage] = useState(0);
 
   const [obsCategory, setObsCategory] = useState([]);
+  const [companies, setCompanies] = useState([]);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const response = await axios.get("/api/sos/allcompanies");
+        setCompanies([...response.data]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
+  console.log(companies);
+  const companyDropDown = companies.map((company, i) => {
+    return (
+      <option key={i} value={company.contactemail}>
+        {company.company}
+      </option>
+    );
+  });
+
+  console.log("Companies: ", companyDropDown);
 
   const obsType = [
     "OBS001-Unsafe Condition",
@@ -278,12 +303,20 @@ export default function ObservationForm() {
                 <Col lg={true}>
                   <Form.Group className="mb-3" controlId="formInvolvedCompany">
                     <Form.Label>Company Involved *</Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                       type="text"
                       placeholder="Name of company"
                       ref={formInvolvedCompanyRef}
                       required
-                    />
+                    /> */}
+                    <Form.Select
+                      defaultValue="Choose..."
+                      ref={formInvolvedCompanyRef}
+                      required
+                    >
+                      <option>Choose...</option>
+                      {companyDropDown}
+                    </Form.Select>
                   </Form.Group>
                 </Col>
               </Row>
