@@ -14,7 +14,8 @@ import Row from "react-bootstrap/Row";
 
 import Message from "./Message";
 
-export default function CompanyForm({ setAdding }) {
+export default function CompanyForm({ setAdding, compid, title, index }) {
+  //define the variables for the form entries
   const formCompanyRef = useRef();
   const formAddressRef = useRef();
   const formContactNameRef = useRef();
@@ -26,9 +27,8 @@ export default function CompanyForm({ setAdding }) {
   const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
-  // const history = useHistory();
 
-  const { companies, dispatch } = useObservationsContext();
+  const { companies, dispatch } = useObservationsContext(); //using global state management via context
 
   async function submitHandler(e) {
     e.preventDefault();
@@ -48,29 +48,48 @@ export default function CompanyForm({ setAdding }) {
       contactmobile: e_contactmobile,
       contactemail: e_contactemail,
     };
+    if (compid === null || compid === undefined || compid === "") {
+      index = null;
+      try {
+        const response = await axios.post("/api/sos/company", companydata);
 
-    try {
-      const response = await axios.post("/api/sos/company", companydata);
+        setAdding(false); //this is a passed down set function to set the state variable 'adding' which then causes
+        //this form / component to close and go back to the main screen which is the list of companies
 
-      console.log(response.data);
-      setAdding(false);
-      dispatch({ type: "CREATE_COMPANY", payload: response.data }); //now using 'dispatch' for global state management -- 03-Sept-22
+        dispatch({ type: "CREATE_COMPANY", payload: response.data }); //now using 'dispatch' for global state management
+      } catch (err) {
+        console.log(err);
+        setError(err.response.data.error);
+      }
+    } else {
+      try {
+        const response = await axios.patch(
+          `/api/sos/company/${compid}`,
+          companydata
+        );
 
-      // navigate("/", { replace: true });
+        console.log("from server: ", response.data);
 
-      // history.push("/");
-    } catch (err) {
-      console.log(err);
-      setError(err.response.data.error);
+        setAdding(false); //this is a passed down set function to set the state variable 'adding' which then causes
+        //this form / component to close and go back to the main screen which is the list of companies
+
+        dispatch({
+          type: "UPDATE_COMPANY",
+          payload: (companies[index] = response.data),
+        }); //now using 'dispatch' for global state management
+      } catch (err) {
+        console.log(err);
+        setError(err.response.data.error);
+      }
     }
   }
 
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <Container fluid>
         <Card>
           <Card.Header className="bg-primary text-center text-white">
-            <h3>Add New Company</h3>
+            <h3>{title}</h3>
           </Card.Header>
           <Card.Body>
             {message ? <Message msg={message} /> : null}
@@ -154,11 +173,6 @@ export default function CompanyForm({ setAdding }) {
                   Submit
                 </Button>
               </div>
-              <p className="mt-2">
-                We are collecting this information to improve our management of
-                projects. How do we collect, manage and disclose personal
-                information? <a href="#">See our Privacy statement</a>
-              </p>
             </Form>
           </Card.Body>
         </Card>

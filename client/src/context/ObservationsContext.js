@@ -40,6 +40,13 @@ export const observationsReducer = (state, action) => {
       return {
         companies: [action.payload, ...state.companies],
       };
+    case "UPDATE_COMPANY":
+      // return {
+      //   companies: (state.companies[
+      //     state.companies.indexOf(action.payload.id)
+      //   ] = action.payload),
+      // };
+      return { companies: [...state.companies] };
     case "DELETE_COMPANY":
       return {
         companies: state.companies.filter(

@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useObservationsContext } from "../hooks/useObservationsContext";
+import CompanyForm from "./CompanyForm";
 
 import axios from "axios";
 
@@ -13,43 +14,40 @@ import Modal from "react-bootstrap/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEraser } from "@fortawesome/free-solid-svg-icons";
 
-export default function CompanyCard({ companies }) {
+export default function CompanyCard({ companies, setAdding }) {
   const { dispatch } = useObservationsContext();
 
   const [obsid, setObsId] = useState("");
-  const [img, setImg] = useState();
-  const [show, setShow] = useState(false);
+  const [idx, setIdx] = useState(null);
+
+  const [showform, setShowForm] = useState(false);
   const [obstitle, setObsTitle] = useState("");
   const [delshow, setDelShow] = useState(false);
   const [undercons, setUndercons] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => setShowForm(false);
   const handleDelClose = () => setDelShow(false);
-  const handleEditClose = () => setUndercons(false);
+  const handleEditClose = () => setShowForm(false);
 
   const handleDelConfirm = async () => {
-    console.log("Clicked Confirm Delete button");
     try {
       const response = await axios.delete(`/api/sos/company/${obsid}`);
       dispatch({ type: "DELETE_COMPANY", payload: response.data });
       console.log(response);
     } catch (err) {
       console.log(err);
-      // setError(err.response.data.msg);
     }
     handleDelClose();
   };
 
-  const handleClick = (imgsrc, title) => {
-    setImg(imgsrc);
-    setShow(true);
-    setObsTitle(title);
-  };
-  const handleClickEdit = (obs_id) => {
+  const handleClickEdit = (obs_id, index) => {
     console.log("Clicked Edit button");
     setObsId(obs_id);
-    setUndercons(true);
+    setIdx(index);
+    setShowForm(true);
+    console.log(obs_id, companies, index);
   };
+
   const handleClickDelete = (obs_id) => {
     setDelShow(true);
     setObsId(obs_id);
@@ -57,9 +55,9 @@ export default function CompanyCard({ companies }) {
 
   return (
     <>
-      {companies.map((company) => (
+      {companies.map((company, index) => (
         <Col xl={true} key={company._id}>
-          <Card style={{ width: "100%" }} className="mt-3" key={company._id}>
+          <Card style={{ width: "100%" }} className="mt-3">
             <Card.Header className="text-center bg-success text-white">
               <div>{company.company}</div>
             </Card.Header>
@@ -74,7 +72,7 @@ export default function CompanyCard({ companies }) {
               <Button
                 className="me-2 text-center"
                 variant="outline-primary"
-                onClick={() => handleClickEdit(company._id)}
+                onClick={() => handleClickEdit(company._id, index)}
               >
                 Edit {""}
                 <FontAwesomeIcon icon={faEdit} />
@@ -111,6 +109,25 @@ export default function CompanyCard({ companies }) {
               Yes
             </Button>
           </Modal.Footer>
+        </Modal>
+      </Container>
+
+      <Container fluid>
+        <Modal
+          show={showform}
+          onHide={handleEditClose}
+          backdrop="static"
+          keyboard={false}
+          size="xl"
+          centered
+        >
+          <Modal.Header closeButton />
+          <CompanyForm
+            setAdding={setShowForm}
+            compid={obsid}
+            title="Edit Company"
+            index={idx}
+          />
         </Modal>
       </Container>
 

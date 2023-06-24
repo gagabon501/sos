@@ -36,7 +36,7 @@ export default function ShowCompanies() {
         const response = await axios.get("/api/sos/allcompanies");
         console.log("Client side: ", response.data);
 
-        dispatch({ type: "SET_COMPANIES", payload: response.data }); //now using 'dispatch' for global state management -- 03-Sept-22
+        dispatch({ type: "SET_COMPANIES", payload: response.data }); //now using 'dispatch' for global state management
       } catch (err) {
         console.log(err);
       }
@@ -75,7 +75,11 @@ export default function ShowCompanies() {
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body className="show-grid">
                   <Container fluid>
-                    <CompanyForm setAdding={setAdding} />
+                    <CompanyForm
+                      setAdding={setAdding}
+                      compid=""
+                      title="Add Company"
+                    />
                   </Container>
                 </Modal.Body>
               </Modal>
@@ -91,7 +95,12 @@ export default function ShowCompanies() {
                   </div>
                 ) : (
                   <Row lg={6}>
-                    {companies && <CompanyCard companies={companies} />}
+                    {companies && (
+                      <CompanyCard
+                        companies={companies}
+                        setAdding={setAdding}
+                      />
+                    )}
                   </Row>
                 )}
               </Card.Body>
