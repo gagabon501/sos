@@ -15,7 +15,13 @@ function CreateObservation() {
             <SideMenu />
           </Col>
           <Col>
-            <ObservationForm />
+            {/* <ObservationForm /> */}
+            <ObservationForm
+              title="Add Observation"
+              setShowForm={null}
+              isAdding={true}
+              index={null}
+            />
           </Col>
         </Row>
         <footer>

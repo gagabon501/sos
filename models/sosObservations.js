@@ -34,7 +34,7 @@ const ssdSchema = new Schema(
       type: String,
     },
     isResolved: {
-      type: String,
+      type: Boolean,
     },
     reportedTo: {
       type: String,
@@ -45,6 +45,15 @@ const ssdSchema = new Schema(
     },
     attachment: {
       type: String,
+    },
+    duedate: {
+      type: Date,
+    },
+    status: {
+      type: String,
+    },
+    dateclosed: {
+      type: Date,
     },
   },
   { timestamps: true }

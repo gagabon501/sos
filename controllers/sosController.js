@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 const mongoose = require("mongoose");
 
 //Models
@@ -53,6 +55,8 @@ const createObservation = async (req, res) => {
     isResolved,
     reportedTo,
     yourName,
+    duedate,
+    status,
   } = req.body;
 
   // add to the database
@@ -69,6 +73,8 @@ const createObservation = async (req, res) => {
       isResolved,
       reportedTo,
       yourName,
+      duedate,
+      status,
       attachment: req.fname, //this req.fname was added from the previous middleware
     });
     var recvr = involvedCompany,
@@ -80,7 +86,10 @@ const createObservation = async (req, res) => {
         observation.observationType +
         "\n" +
         "Description: " +
-        observation.description;
+        observation.description +
+        "\n" +
+        "Due date is: " +
+        moment(observation.duedate).format("DD-MMM-YYYY");
 
     sendMail(recvr, subject, emailbody);
 
@@ -109,6 +118,7 @@ const deleteObservation = async (req, res) => {
 
 // update a observation
 const updateObservation = async (req, res) => {
+  console.log("req.body: ", req.body);
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -118,13 +128,15 @@ const updateObservation = async (req, res) => {
   const observation = await Observation.findOneAndUpdate(
     { _id: id },
     {
-      ...req.body,
+      duedate: req.body.duedate,
     }
   );
 
   if (!observation) {
     return res.status(400).json({ error: "No such observation" });
   }
+  req.body._id = id;
+  console.log(req.body);
 
   res.status(200).json(observation);
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef, useState, useEffect } from "react";
-// import { useObservationsContext } from "../hooks/useObservationsContext";
+import { useObservationsContext } from "../hooks/useObservationsContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -14,23 +14,55 @@ import Row from "react-bootstrap/Row";
 import Message from "./Message";
 import Progress from "./Progress";
 
-export default function ObservationForm() {
-  // const { dispatch } = useObservationsContext();
+export default function ObservationForm({
+  title,
+  setShowForm,
+  isAdding,
+  index,
+}) {
+  const { observations, dispatch } = useObservationsContext();
 
-  const formObservationTypeRef = useRef();
-  const formObsCategoryRef = useRef();
-  const formLocationRef = useRef();
-  const formInvolvedCompanyRef = useRef();
-  const formDescriptionRef = useRef();
-  const formReportedToRef = useRef();
-  const formYourNameRef = useRef();
+  let obs = {};
+  if (isAdding) {
+    obs = {
+      observationType: "",
+      observationCategory: "",
+      location: "",
+      involvedCompany: "",
+      description: "",
+      reportedTo: "",
+      yourName: "",
+      attachment: "",
+      duedate: Date.now(),
+      status: "OPEN",
+    };
+  } else {
+    obs = observations[index];
+  }
+  console.log(obs);
+
+  const formObservationTypeRef = useRef(obs.observationType);
+  const formObsCategoryRef = useRef(obs.observationCategory);
+  const formLocationRef = useRef(obs.location);
+  const formInvolvedCompanyRef = useRef(obs.involvedCompany);
+  const formDescriptionRef = useRef(obs.description);
+  const formReportedToRef = useRef(obs.reportedTo);
+  const formYourNameRef = useRef(obs.yourName);
+  const formDueDateRef = useRef(obs.duedate);
+
+  // const formObservationTypeRef = useRef();
+  // const formObsCategoryRef = useRef();
+  // const formLocationRef = useRef();
+  // const formInvolvedCompanyRef = useRef();
+  // const formDescriptionRef = useRef();
+  // const formReportedToRef = useRef();
+  // const formYourNameRef = useRef();
+  // const formDueDateRef = useRef();
 
   const [error, setError] = useState(null);
-  // const [emptyFields, setEmptyFields] = useState([]);
   const [file, setFile] = useState("");
   const [filename, setFilename] = useState("Choose file");
   const [filepreview, setFilePreview] = useState("");
-  // const [isResolved, setIsResolved] = useState("");
 
   const [uploadedFile, setUploadedFile] = useState({});
   const [message, setMessage] = useState("");
@@ -52,7 +84,6 @@ export default function ObservationForm() {
     fetchCompanies();
   }, []);
 
-  console.log(companies);
   const companyDropDown = companies.map((company, i) => {
     return (
       <option key={i} value={company.contactemail}>
@@ -158,10 +189,6 @@ export default function ObservationForm() {
     };
   };
 
-  // const onCheck = (e) => {
-  //   setIsResolved(e.target.value);
-  // };
-
   const onChangeObsType = (e) => {
     console.log(e.target.value.substr(0, 6));
     switch (e.target.value.substr(0, 6)) {
@@ -188,7 +215,9 @@ export default function ObservationForm() {
   async function submitHandler(e) {
     e.preventDefault();
 
-    console.log("Event: ", e);
+    // console.log("Event: ", e);
+
+    // console.log(observation);
 
     const enteredType = formObservationTypeRef.current.value;
     const enteredObsCategory = formObsCategoryRef.current.value;
@@ -197,49 +226,105 @@ export default function ObservationForm() {
     const enteredDescription = formDescriptionRef.current.value;
     const enteredReportedTo = formReportedToRef.current.value;
     const enteredYourName = formYourNameRef.current.value;
+    const enteredDueDate = formDueDateRef.current.value;
+    const status = "OPEN";
 
-    //Create Formdata - did this due to the addition of file in the submission of data
-    const formData = new FormData();
-    formData.append("observationType", enteredType);
-    formData.append("observationCategory", enteredObsCategory);
-    formData.append("location", enteredformLocation);
-    formData.append("involvedCompany", enteredInvolvedCompany);
-    formData.append("description", enteredDescription);
-    formData.append("reportedTo", enteredReportedTo);
-    formData.append("yourName", enteredYourName);
-    formData.append("file", file);
+    // Monitor status of observation (raised, routed, corrected, closed-out).
 
-    console.log(formData);
+    if (isAdding) {
+      console.log("Adding observation");
+      //Create Formdata - did this due to the addition of file in the submission of data
+      const formData = new FormData();
+      formData.append("observationType", enteredType);
+      formData.append("observationCategory", enteredObsCategory);
+      formData.append("location", enteredformLocation);
+      formData.append("involvedCompany", enteredInvolvedCompany);
+      formData.append("description", enteredDescription);
+      formData.append("reportedTo", enteredReportedTo);
+      formData.append("yourName", enteredYourName);
+      formData.append("file", file);
+      formData.append("duedate", enteredDueDate);
+      formData.append("status", status);
 
-    try {
-      const response = await axios.post("/api/sos/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        onUploadProgress: (progressEvent) => {
-          setUploadPercentage(
-            parseInt(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            )
-          );
-        },
-      });
+      console.log(formData);
+      try {
+        const response = await axios.post("/api/sos/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent) => {
+            setUploadPercentage(
+              parseInt(
+                Math.round((progressEvent.loaded * 100) / progressEvent.total)
+              )
+            );
+          },
+        });
 
-      // Clear percentage
-      // setTimeout(() => setUploadPercentage(0), 10000);
-      const { fileName, filePath } = response.data;
+        // Clear percentage
+        // setTimeout(() => setUploadPercentage(0), 10000);
+        const { fileName, filePath } = response.data;
 
-      // dispatch({ type: "CREATE_OBSERVATION", payload: response.data });
+        // dispatch({ type: "CREATE_OBSERVATION", payload: response.data }); //no need to update this as this is not displayed as a list
 
-      setUploadedFile({ fileName, filePath });
+        setUploadedFile({ fileName, filePath });
 
-      setMessage("File Uploaded");
-      // window.location.replace("/");
-      navigate("/", { replace: true });
-      // history.push("/");
-    } catch (err) {
-      console.log(err);
-      setError(err.response.data.error);
+        setMessage("File Uploaded");
+
+        navigate("/", { replace: true });
+      } catch (err) {
+        console.log(err);
+        setError(err.response.data.error);
+      }
+    } else {
+      const observation = observations[index];
+      //Create Formdata - did this due to the addition of file in the submission of data
+      // const observationData = {
+      //   observationType: enteredType,
+      //   observationCategory: enteredObsCategory,
+      //   location: enteredformLocation,
+      //   involvedCompany: enteredInvolvedCompany,
+      //   description: enteredDescription,
+      //   reportedTo: enteredReportedTo,
+      //   yourName: enteredYourName,
+      //   duedate: enteredDueDate,
+      // };
+      const observationData = {
+        observationType: formObservationTypeRef.current.value,
+        observationCategory: formObsCategoryRef.current.value,
+        location: formLocationRef.current.value,
+        involvedCompany: formInvolvedCompanyRef.current.value,
+        description: formDescriptionRef.current.value,
+        reportedTo: formReportedToRef.current.value,
+        yourName: formYourNameRef.current.value,
+        duedate: enteredDueDate,
+      };
+
+      // const response = await axios.patch(
+      //   `/api/sos/company/${compid}`,
+      //   companydata
+      // );
+
+      try {
+        const response = await axios.patch(
+          `/api/sos/${observation._id}`,
+          observationData
+        );
+
+        const { fileName, filePath } = response.data;
+        dispatch({
+          type: "UPDATE_OBSERVATION",
+          payload: (observations[index] = response.data),
+        });
+
+        setUploadedFile({ fileName, filePath });
+
+        setMessage("File Uploaded");
+        setShowForm(false);
+      } catch (err) {
+        console.log(err);
+        setError(err.response.data.error);
+      }
     }
   }
 
@@ -248,7 +333,7 @@ export default function ObservationForm() {
       <Container fluid>
         <Card>
           <Card.Header className="bg-primary text-center text-white">
-            <h3>Record HSE Observation</h3>
+            <h3>{title}</h3>
           </Card.Header>
           <Card.Body>
             {message ? <Message msg={message} /> : null}
@@ -262,6 +347,8 @@ export default function ObservationForm() {
                       ref={formObservationTypeRef}
                       onChange={onChangeObsType}
                       required
+                      disabled={!isAdding}
+                      placeholder={obs.observationType}
                     >
                       <option>Choose...</option>
                       {obsType}
@@ -278,6 +365,7 @@ export default function ObservationForm() {
                       defaultValue="Choose..."
                       ref={formObsCategoryRef}
                       required
+                      disabled={!isAdding}
                     >
                       <option>Choose...</option>
                       {obsCategory}
@@ -294,29 +382,33 @@ export default function ObservationForm() {
                     <Form.Label>Location *</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Location of observation"
+                      placeholder={
+                        isAdding ? "Location of observation" : obs.location
+                      }
                       ref={formLocationRef}
                       required
+                      disabled={!isAdding}
                     />
                   </Form.Group>
                 </Col>
                 <Col lg={true}>
                   <Form.Group className="mb-3" controlId="formInvolvedCompany">
                     <Form.Label>Company Involved *</Form.Label>
-                    {/* <Form.Control
-                      type="text"
-                      placeholder="Name of company"
-                      ref={formInvolvedCompanyRef}
-                      required
-                    /> */}
                     <Form.Select
                       defaultValue="Choose..."
                       ref={formInvolvedCompanyRef}
                       required
+                      disabled={!isAdding}
                     >
                       <option>Choose...</option>
                       {companyDropDown}
                     </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col lg={2}>
+                  <Form.Group className="mb-3" controlId="formDueDate">
+                    <Form.Label>Due Date *</Form.Label>
+                    <Form.Control type="date" ref={formDueDateRef} required />
                   </Form.Group>
                 </Col>
               </Row>
@@ -327,33 +419,37 @@ export default function ObservationForm() {
                   rows={3}
                   ref={formDescriptionRef}
                   required
+                  placeholder={obs.description}
+                  disabled={!isAdding}
                 />
               </Form.Group>
-              <Row>
-                <Col lg={8}>
-                  <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label>Upload Photo</Form.Label>
-                    {/* <ImagesUpload /> */}
-                    <Form.Control type="file" onChange={onChange} required />
-                  </Form.Group>
-                </Col>
-                <Col>
-                  {uploadedFile ? (
-                    <div className="mt-4">
-                      <img
-                        src={filepreview}
-                        style={{
-                          border: "1px solid #ddd",
-                          borderRadius: "50%",
-                          width: "200px",
-                          height: "200px",
-                        }}
-                        alt="preview"
-                      />
-                    </div>
-                  ) : null}
-                </Col>
-              </Row>
+              {isAdding && (
+                <Row>
+                  <Col lg={8}>
+                    <Form.Group controlId="formFile" className="mb-3">
+                      <Form.Label>Upload Photo</Form.Label>
+                      {/* <ImagesUpload /> */}
+                      <Form.Control type="file" onChange={onChange} required />
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    {uploadedFile ? (
+                      <div className="mt-4">
+                        <img
+                          src={filepreview}
+                          style={{
+                            border: "1px solid #ddd",
+                            borderRadius: "50%",
+                            width: "200px",
+                            height: "200px",
+                          }}
+                          alt="preview"
+                        />
+                      </div>
+                    ) : null}
+                  </Col>
+                </Row>
+              )}
 
               <Row>
                 <Col lg={true}>
@@ -361,9 +457,14 @@ export default function ObservationForm() {
                     <Form.Label>Person reported to *</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="The person you reported the observation to"
+                      placeholder={
+                        isAdding
+                          ? "The person you reported the observation to"
+                          : obs.reportedTo
+                      }
                       ref={formReportedToRef}
                       required
+                      disabled={!isAdding}
                     />
                   </Form.Group>
                 </Col>
@@ -372,8 +473,11 @@ export default function ObservationForm() {
                     <Form.Label>Your name - optional </Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Your name - optional"
+                      placeholder={
+                        isAdding ? "Your name - optional" : obs.yourName
+                      }
                       ref={formYourNameRef}
+                      disabled={!isAdding}
                     />
                   </Form.Group>
                 </Col>

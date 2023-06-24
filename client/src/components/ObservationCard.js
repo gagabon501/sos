@@ -13,6 +13,7 @@ import Container from "react-bootstrap/Container";
 import Modal from "react-bootstrap/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faEraser } from "@fortawesome/free-solid-svg-icons";
+import ObservationForm from "./ObservationForm";
 
 export default function ObservationCard({ observations }) {
   const { dispatch } = useObservationsContext();
@@ -23,10 +24,12 @@ export default function ObservationCard({ observations }) {
   const [obstitle, setObsTitle] = useState("");
   const [delshow, setDelShow] = useState(false);
   const [undercons, setUndercons] = useState(false);
+  const [index, setIndex] = useState(null);
+  const [showform, setShowForm] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleDelClose = () => setDelShow(false);
-  const handleEditClose = () => setUndercons(false);
+  const handleEditClose = () => setShowForm(false);
 
   const handleDelConfirm = async () => {
     console.log("Clicked Confirm Delete button");
@@ -46,10 +49,11 @@ export default function ObservationCard({ observations }) {
     setShow(true);
     setObsTitle(title);
   };
-  const handleClickEdit = (obs_id) => {
+  const handleClickEdit = (obs_id, idx) => {
     console.log("Clicked Edit button");
     setObsId(obs_id);
-    setUndercons(true);
+    setIndex(idx);
+    setShowForm(true);
   };
   const handleClickDelete = (obs_id) => {
     setDelShow(true);
@@ -58,7 +62,7 @@ export default function ObservationCard({ observations }) {
 
   return (
     <>
-      {observations.map((obs) => (
+      {observations.map((obs, idx) => (
         <Col lg={true} key={obs._id}>
           <Card style={{ width: "100%" }} className="mt-3" key={obs._id}>
             <Card.Img
@@ -90,7 +94,7 @@ export default function ObservationCard({ observations }) {
               <Button
                 className="me-2 text-center"
                 variant="outline-primary"
-                onClick={() => handleClickEdit(obs._id)}
+                onClick={() => handleClickEdit(obs._id, idx)}
               >
                 Edit {""}
                 <FontAwesomeIcon icon={faEdit} />
@@ -153,18 +157,21 @@ export default function ObservationCard({ observations }) {
         </Modal>
       </Container>
 
-      <Container>
+      <Container fluid>
         <Modal
-          show={undercons}
+          show={showform}
           onHide={handleEditClose}
           backdrop="static"
           keyboard={false}
+          size="xl"
         >
-          <Modal.Header closeButton>
-            <Modal.Title className="text-center">
-              Component under construction
-            </Modal.Title>
-          </Modal.Header>
+          <Modal.Header closeButton />
+          <ObservationForm
+            title="Edit Observation"
+            setShowForm={setShowForm}
+            isAdding={false}
+            index={index}
+          />
         </Modal>
       </Container>
     </>

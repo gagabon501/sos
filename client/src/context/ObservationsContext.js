@@ -12,6 +12,10 @@ export const observationsReducer = (state, action) => {
       return {
         observations: [action.payload, ...state.observations],
       };
+    case "UPDATE_OBSERVATION":
+      return {
+        observations: [...state.observations],
+      };
     case "DELETE_OBSERVATION":
       return {
         observations: state.observations.filter(
