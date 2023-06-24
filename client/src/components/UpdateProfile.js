@@ -14,8 +14,14 @@ import NavBar from "./NavBar";
 
 import Message from "./Message";
 import Progress from "./Progress";
+import { useObservationsContext } from "../hooks/useObservationsContext";
 
-export default function UpdateProfile({ shownav, userdata }) {
+export default function UpdateProfile({
+  shownav,
+  userdata,
+  setUndercons,
+  index,
+}) {
   // const user = JSON.parse(localStorage.getItem("user")); //get user info from localStorage - not the right way. Get the user from what was clicked to be edited
 
   const formLastnameRef = useRef(userdata.lastname);
@@ -30,6 +36,8 @@ export default function UpdateProfile({ shownav, userdata }) {
   const [uploadedFile, setUploadedFile] = useState({});
   const [message, setMessage] = useState("");
   const [uploadPercentage, setUploadPercentage] = useState(0);
+
+  const { usersList, dispatch } = useObservationsContext(); //using global state management via context
 
   const onChange = (e) => {
     setFile(e.target.files[0]);
@@ -83,15 +91,22 @@ export default function UpdateProfile({ shownav, userdata }) {
           },
         }
       );
-
-      localStorage.setItem("user", JSON.stringify(response.data));
+      if (!shownav) {
+        dispatch({
+          type: "UPDATE_USER",
+          payload: (usersList[index] = response.data),
+        }); //now using 'dispatch' for global state management
+        setUndercons(false);
+      } else {
+        localStorage.setItem("user", JSON.stringify(response.data));
+        navigate("/dashboard ", { replace: true });
+      }
 
       const { fileName, filePath } = response.data;
 
       setUploadedFile({ fileName, filePath });
 
       setMessage("File Uploaded");
-      navigate("/dashboard ", { replace: true });
     } catch (err) {
       console.log(err);
       setError(err.response.data.error);

@@ -32,6 +32,13 @@ export const observationsReducer = (state, action) => {
           (obs) => obs._id !== action.payload._id
         ),
       };
+    case "UPDATE_USER":
+      // return {
+      //   usersList: state.usersList.filter(
+      //     (obs) => obs._id !== action.payload._id
+      //   ),
+      // };
+      return { usersList: [...state.usersList] };
     case "SET_COMPANIES":
       return {
         companies: action.payload,

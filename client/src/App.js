@@ -14,7 +14,14 @@ import ShowUsers from "./components/ShowUsers";
 import UnderConstruction from "./components/underConstruction";
 import ShowCompanies from "./components/ShowCompanies";
 
+// <UpdateProfile
+//   shownav={false}
+//   userdata={userdata}
+//   setUndercons={setUndercons}
+//   index={index}
+// />;
 const App = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <Routes>
       <Route path="/login" element={<LoginForm />} />
@@ -29,7 +36,10 @@ const App = () => {
         <Route path="/showuser" element={<ShowUsers />} />
         <Route path="/showcompanies" element={<ShowCompanies />} />
         <Route path="/logout" element={<LogOut />} />
-        <Route path="/updateuser" element={<UpdateProfile shownav={true} />} />
+        <Route
+          path="/updateuser"
+          element={<UpdateProfile shownav={true} userdata={user} />}
+        />
         <Route path="/changepassword" element={<ChangePassword />} />
 
         <Route path="/undercons" element={<UnderConstruction />} />
