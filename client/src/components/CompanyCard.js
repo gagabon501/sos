@@ -62,7 +62,7 @@ export default function CompanyCard({ companies, setAdding }) {
               <div>{company.company}</div>
             </Card.Header>
             <Card.Body className="text-center">
-              <div>{company.address.substring(1, 28)}</div>
+              <div>{company.address.substring(0, 28)}</div>
               <div>{company.contactname}</div>
               <div>{company.contactposition}</div>
               <div>{company.contactmobile}</div>
