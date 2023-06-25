@@ -39,6 +39,7 @@ export default function StatsChart(props) {
       try {
         const response = await axios.get(props.url);
         setData(response.data);
+        console.log("From server stats: ", response.data);
       } catch (err) {
         console.log(err);
       }

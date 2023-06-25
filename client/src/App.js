@@ -13,13 +13,8 @@ import ForgotPassword from "./components/ForgotPassword";
 import ShowUsers from "./components/ShowUsers";
 import UnderConstruction from "./components/underConstruction";
 import ShowCompanies from "./components/ShowCompanies";
+import Report from "./components/Report";
 
-// <UpdateProfile
-//   shownav={false}
-//   userdata={userdata}
-//   setUndercons={setUndercons}
-//   index={index}
-// />;
 const App = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   return (
@@ -35,6 +30,7 @@ const App = () => {
         <Route path="/show" element={<ShowObservations />} />
         <Route path="/showuser" element={<ShowUsers />} />
         <Route path="/showcompanies" element={<ShowCompanies />} />
+        <Route path="/report" element={<Report />} />
         <Route path="/logout" element={<LogOut />} />
         <Route
           path="/updateuser"

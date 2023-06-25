@@ -24,7 +24,7 @@ function SideMenu() {
             </Nav.Link>
           </Nav.Item>
           <Nav.Item fill={true}>
-            <Nav.Link href="/undercons">
+            <Nav.Link href="/report">
               <MenuBox text="Generate Report" img="generate1.png" />
             </Nav.Link>
           </Nav.Item>
