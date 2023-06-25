@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import axios from "axios";
+import Container from "react-bootstrap/Container";
+import Card from "react-bootstrap/Card";
+
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import NavBar from "./NavBar";
+import SideMenu from "./SideMenu";
+import Footer from "./Footer";
 
 export default function Report() {
   const [bytype, setByType] = useState([]);
@@ -77,16 +86,42 @@ export default function Report() {
     // doc.text(20, 60, "This is the second title.");
     // doc.text(20, 100, "This is the thrid title.");
 
-    doc.save("demo.pdf");
+    doc.save("SOS_Summary_Report.pdf");
   };
 
   return (
     <>
-      <div>
-        <button onClick={generatePDF} type="primary">
-          Download PDF
-        </button>
-      </div>
+      <NavBar />
+      <Container fluid>
+        <Row>
+          <Col lg={2}>
+            <SideMenu />
+          </Col>
+          <Col>
+            <div>
+              <Container className="mt-5">
+                <Row>
+                  <Col lg={4} className="m-auto">
+                    <Card>
+                      <Card.Header className="bg-primary text-center text-white">
+                        <h4>SOS Report</h4>
+                      </Card.Header>
+                      <Card.Body className="m-auto">
+                        <Button variant="primary" onClick={generatePDF}>
+                          Download Report
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
+              </Container>
+            </div>
+          </Col>
+        </Row>
+        <footer>
+          <Footer />
+        </footer>
+      </Container>
     </>
   );
 }
