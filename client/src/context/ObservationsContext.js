@@ -16,6 +16,10 @@ export const observationsReducer = (state, action) => {
       return {
         observations: [...state.observations],
       };
+    case "CLOSE_OBSERVATION":
+      return {
+        observations: [...state.observations],
+      };
     case "DELETE_OBSERVATION":
       return {
         observations: state.observations.filter(

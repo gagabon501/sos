@@ -229,8 +229,6 @@ export default function ObservationForm({
     const enteredDueDate = formDueDateRef.current.value;
     const status = "OPEN";
 
-    // Monitor status of observation (raised, routed, corrected, closed-out).
-
     if (isAdding) {
       console.log("Adding observation");
       //Create Formdata - did this due to the addition of file in the submission of data
@@ -261,8 +259,6 @@ export default function ObservationForm({
           },
         });
 
-        // Clear percentage
-        // setTimeout(() => setUploadPercentage(0), 10000);
         const { fileName, filePath } = response.data;
 
         // dispatch({ type: "CREATE_OBSERVATION", payload: response.data }); //no need to update this as this is not displayed as a list
@@ -278,17 +274,7 @@ export default function ObservationForm({
       }
     } else {
       const observation = observations[index];
-      //Create Formdata - did this due to the addition of file in the submission of data
-      // const observationData = {
-      //   observationType: enteredType,
-      //   observationCategory: enteredObsCategory,
-      //   location: enteredformLocation,
-      //   involvedCompany: enteredInvolvedCompany,
-      //   description: enteredDescription,
-      //   reportedTo: enteredReportedTo,
-      //   yourName: enteredYourName,
-      //   duedate: enteredDueDate,
-      // };
+
       const observationData = {
         observationType: formObservationTypeRef.current.value,
         observationCategory: formObsCategoryRef.current.value,
@@ -299,11 +285,6 @@ export default function ObservationForm({
         yourName: formYourNameRef.current.value,
         duedate: enteredDueDate,
       };
-
-      // const response = await axios.patch(
-      //   `/api/sos/company/${compid}`,
-      //   companydata
-      // );
 
       try {
         const response = await axios.patch(

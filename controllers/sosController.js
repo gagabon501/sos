@@ -143,6 +143,36 @@ const updateObservation = async (req, res) => {
   res.status(200).json(observation);
 };
 
+// close-out an observation
+const closeObservation = async (req, res) => {
+  console.log("req.body: ", req.body);
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "No such observation" });
+  }
+
+  const observation = await Observation.findOneAndUpdate(
+    { _id: id },
+    {
+      actionTaken: req.body.actionTaken,
+      dateclosed: req.body.dateclosed,
+      status: req.body.status,
+      isResolved: true,
+    },
+    { new: true }
+  );
+
+  if (!observation) {
+    return res.status(400).json({ error: "No such observation" });
+  }
+  req.body._id = id;
+  console.log("close out req.body", req.body);
+  console.log("after update: ", observation);
+
+  res.status(200).json(observation);
+};
+
 /**
  * -------------- COMPANY CONTROLLERS ----------------
  */
@@ -669,4 +699,5 @@ module.exports = {
   createCompany,
   updateCompany,
   deleteCompany,
+  closeObservation,
 };

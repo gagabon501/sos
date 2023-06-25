@@ -39,6 +39,7 @@ const {
   createCompany,
   updateCompany,
   deleteCompany,
+  closeObservation,
 } = require("../controllers/sosController");
 
 const storage = multer.memoryStorage(); //this is a good way to minimize file saving into the disk - just save it into memory as a buffer
@@ -218,6 +219,9 @@ router.delete("/:id", isAuth, deleteObservation);
 
 // UPDATE a observation
 router.patch("/:id", isAuth, updateObservation);
+
+// CLOSE-OUT an observation
+router.patch("/close/:id", isAuth, closeObservation);
 
 router.get("/image/:filename", showImage);
 

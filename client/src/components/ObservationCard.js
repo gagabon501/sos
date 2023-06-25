@@ -12,8 +12,13 @@ import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Modal from "react-bootstrap/Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faEraser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleCheck,
+  faEdit,
+  faEraser,
+} from "@fortawesome/free-solid-svg-icons";
 import ObservationForm from "./ObservationForm";
+import ResolveForm from "./ResolveForm";
 
 export default function ObservationCard({ observations }) {
   const { dispatch } = useObservationsContext();
@@ -23,13 +28,15 @@ export default function ObservationCard({ observations }) {
   const [show, setShow] = useState(false);
   const [obstitle, setObsTitle] = useState("");
   const [delshow, setDelShow] = useState(false);
-  const [undercons, setUndercons] = useState(false);
+
   const [index, setIndex] = useState(null);
   const [showform, setShowForm] = useState(false);
+  const [showresolve, setShowResolve] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleDelClose = () => setDelShow(false);
   const handleEditClose = () => setShowForm(false);
+  const handleResolveClose = () => setShowResolve(false);
 
   const handleDelConfirm = async () => {
     console.log("Clicked Confirm Delete button");
@@ -58,6 +65,12 @@ export default function ObservationCard({ observations }) {
   const handleClickDelete = (obs_id) => {
     setDelShow(true);
     setObsId(obs_id);
+  };
+  const handleClickResolve = (obs_id, idx) => {
+    console.log("Click resolve. ID is: ", obs_id);
+    setShowResolve(true);
+    setObsId(obs_id);
+    setIndex(idx);
   };
 
   return (
@@ -89,29 +102,44 @@ export default function ObservationCard({ observations }) {
                   ? obs.description.substr(0, 24) + "..."
                   : obs.description}
               </div>
-              <div style={{ color: "red" }}>
-                Due date: {moment(obs.duedate).format("DD-MMM-YYYY")}
+              <div style={{ color: obs.isResolved ? "green" : "red" }}>
+                {obs.isResolved
+                  ? `Date closed: ${moment(obs.dateclosed).format(
+                      "DD-MMM-YYYY"
+                    )}`
+                  : `Due date: ${moment(obs.duedate).format("DD-MMM-YYYY")}`}
               </div>
               <div>Status: {obs.status}</div>
             </Card.Body>
-            <Card.Footer className="fs-5">
-              <Button
-                className="me-2 text-center"
-                variant="outline-primary"
-                onClick={() => handleClickEdit(obs._id, idx)}
-              >
-                Edit {""}
-                <FontAwesomeIcon icon={faEdit} />
-              </Button>
+            {!obs.isResolved && (
+              <Card.Footer className="fs-5">
+                <FontAwesomeIcon
+                  icon={faEdit}
+                  onClick={() => handleClickEdit(obs._id, idx)}
+                  style={{
+                    cursor: "pointer",
+                    color: "blue",
+                    marginRight: "5px",
+                  }}
+                />
 
-              <Button
-                className="ml-3"
-                variant="outline-danger"
-                onClick={() => handleClickDelete(obs._id)}
-              >
-                Del <FontAwesomeIcon icon={faEraser} />
-              </Button>
-            </Card.Footer>
+                <FontAwesomeIcon
+                  icon={faEraser}
+                  onClick={() => handleClickDelete(obs._id)}
+                  style={{
+                    cursor: "pointer",
+                    color: "red",
+                    marginRight: "5px",
+                  }}
+                />
+
+                <FontAwesomeIcon
+                  icon={faCircleCheck}
+                  onClick={() => handleClickResolve(obs._id, idx)}
+                  style={{ cursor: "pointer", color: "green" }}
+                />
+              </Card.Footer>
+            )}
           </Card>
         </Col>
       ))}
@@ -176,6 +204,21 @@ export default function ObservationCard({ observations }) {
             isAdding={false}
             index={index}
           />
+        </Modal>
+      </Container>
+
+      <Container fluid>
+        <Modal
+          show={showresolve}
+          onHide={handleResolveClose}
+          backdrop="static"
+          keyboard={false}
+          size="lg"
+          centered
+        >
+          <Modal.Header closeButton />
+
+          <ResolveForm setShowResolve={setShowResolve} index={index} />
         </Modal>
       </Container>
     </>
